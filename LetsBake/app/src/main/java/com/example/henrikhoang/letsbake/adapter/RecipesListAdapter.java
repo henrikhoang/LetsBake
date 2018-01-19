@@ -3,6 +3,7 @@ package com.example.henrikhoang.letsbake.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,9 @@ public class RecipesListAdapter extends
     public void onBindViewHolder(RecipesListAdapterViewHolder holder, int position) {
         final Recipe recipe = mRecipes.get(position);
         String selectedRecipeName = recipe.getNAME();
-        holder.mRecipeNameTextView.setText(selectedRecipeName);
+        Log.d(TAG, "NAME OF RECIPE: " + selectedRecipeName);
+        Log.d(TAG, "NAME OF ID: " + recipe.getID());
+//        holder.mRecipeNameTextView.setText(selectedRecipeName);
     }
 
     @Override

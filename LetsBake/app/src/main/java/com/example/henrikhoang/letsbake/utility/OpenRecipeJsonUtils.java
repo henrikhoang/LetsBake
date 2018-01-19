@@ -23,7 +23,7 @@ public final class OpenRecipeJsonUtils {
     private static final String Iingredient = "ingredient";
     private static final String STEPS = "steps";
     private static final String SHORT_DESCRIPTION = "shortDescription";
-    private static final String DESCRIPTION = "despcription";
+    private static final String DESCRIPTION = "description";
     private static final String VIDEO_URL = "videoURL";
     private static final String THUMBNAIL_URL = "thumbnailURL";
     private static final String SERVINGS = "servings";
