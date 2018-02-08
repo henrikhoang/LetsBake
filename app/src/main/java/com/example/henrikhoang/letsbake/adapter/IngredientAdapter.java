@@ -29,9 +29,10 @@ public class IngredientAdapter extends
         void onCLick(Recipe.Steps step);
     }
 
-    public IngredientAdapter(IngredientAdapterOnClickHandler clickHandler, @NonNull Context context) {
+    public IngredientAdapter(IngredientAdapterOnClickHandler clickHandler, @NonNull Context context, Recipe recipe) {
         mClickHandler = clickHandler;
         mContext = context;
+        mRecipe = recipe;
     }
 
     @Override
