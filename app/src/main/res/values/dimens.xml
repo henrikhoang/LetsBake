@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="progressBar">42dp</dimen>
+    <dimen name="card_margin">5dp</dimen>
+    <dimen name="card_recipe_radius">0dp</dimen>
+    <dimen name="recipe_thumbnail_height">160dp</dimen>
+    <dimen name="app_name">30dp</dimen>
+    <dimen name="backdrop_subtitle">18dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="card_elevation">3dp</dimen>
+    <dimen name="normal_text_size">15sp</dimen>
+    <dimen name="picture_height">160dp</dimen>
+    <dimen name="normal_padding">10dp</dimen>
+</resources>

@@ -2,6 +2,7 @@ package com.example.henrikhoang.letsbake;
 
 import org.parceler.Parcel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -9,7 +10,7 @@ import java.util.ArrayList;
  */
 
 @Parcel
-public class Recipe {
+public class Recipe implements Serializable {
     String NAME;
     int ID;
     ArrayList<Ingredients> INGREDIENTS;
@@ -83,7 +84,10 @@ public class Recipe {
         this.IMAGE_URL = IMAGE_URL;
     }
 
-    public static class Ingredients {
+
+
+
+    public static class Ingredients implements Serializable {
         int mQuantity;
         String mMeasure;
         String mIngredientName;
@@ -115,7 +119,7 @@ public class Recipe {
 
     }
 
-    public static class Steps {
+    public static class Steps implements Serializable {
         int id;
         String shortDescription;
         String description;

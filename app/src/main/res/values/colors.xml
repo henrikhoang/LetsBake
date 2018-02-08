@@ -3,4 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="recipe_name">#4c4c4c</color>
+    <color name="background_view">#f1f5f8</color>
+    <color name="chocolate">#8B4513</color>
 </resources>

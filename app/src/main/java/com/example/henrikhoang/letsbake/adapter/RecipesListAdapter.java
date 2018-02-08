@@ -7,10 +7,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.henrikhoang.letsbake.R;
 import com.example.henrikhoang.letsbake.Recipe;
+import com.example.henrikhoang.letsbake.utility.ThumbnailUtil;
 
 import java.util.List;
 
@@ -36,10 +39,30 @@ public class RecipesListAdapter extends
         mContext = context;
     }
 
+    class RecipesListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+
+        final ImageView mRecipeThumbnailImageView;
+        final TextView mRecipeNameTextView;
+
+        RecipesListAdapterViewHolder(View view) {
+            super(view);
+            mRecipeNameTextView = (TextView) view.findViewById(R.id.tv_recipe_name);
+            mRecipeThumbnailImageView = (ImageView) view.findViewById(R.id.iv_recipe_thumbnail);
+            view.setOnClickListener(this);
+        }
+
+        public void onClick(View v) {
+            int adapterPosition = getAdapterPosition();
+            Recipe recipe = mRecipes.get(adapterPosition);
+            mClickHandler.onClick(recipe);
+        }
+    }
+
     @Override
     public RecipesListAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-        int layoutIdForListItem = R.layout.recipe_list_item_recyclerview;
+        int layoutIdForListItem = R.layout.recipes_card_view;
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
 
@@ -52,8 +75,11 @@ public class RecipesListAdapter extends
         final Recipe recipe = mRecipes.get(position);
         String selectedRecipeName = recipe.getNAME();
         Log.d(TAG, "NAME OF RECIPE: " + selectedRecipeName);
-        Log.d(TAG, "NAME OF ID: " + recipe.getID());
+
+        int imgRes = ThumbnailUtil.getImageResByName(mContext, selectedRecipeName);
+        Log.d(TAG, "img res: " + imgRes);
         holder.mRecipeNameTextView.setText(selectedRecipeName);
+        Glide.with(mContext).load(imgRes).into(holder.mRecipeThumbnailImageView);
     }
 
     @Override
@@ -67,20 +93,5 @@ public class RecipesListAdapter extends
         notifyDataSetChanged();
     }
 
-    class RecipesListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        final TextView mRecipeNameTextView;
-
-        RecipesListAdapterViewHolder(View view) {
-            super(view);
-            mRecipeNameTextView = (TextView) view.findViewById(R.id.tv_recipe_name);
-            view.setOnClickListener(this);
-        }
-
-        public void onClick(View v) {
-            int adapterPosition = getAdapterPosition();
-            Recipe recipe = mRecipes.get(adapterPosition);
-            mClickHandler.onClick(recipe);
-        }
-    }
 }
