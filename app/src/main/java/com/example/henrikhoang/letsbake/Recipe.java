@@ -26,6 +26,7 @@ public class Recipe implements Serializable {
         this.SERVINGS = servings;
         this.IMAGE_URL = imageURL;
     }
+
     public Recipe(int id, String name, ArrayList<Ingredients> ingredients, ArrayList<Steps> steps, int servings,
                   String imageURL) {
         this.ID =id;
@@ -84,9 +85,6 @@ public class Recipe implements Serializable {
         this.IMAGE_URL = IMAGE_URL;
     }
 
-
-
-
     public static class Ingredients implements Serializable {
         int mQuantity;
         String mMeasure;
@@ -125,6 +123,7 @@ public class Recipe implements Serializable {
         String description;
         String videoURL;
         String thumbnailURL;
+
 
         public Steps(int id, String shortDescription, String description, String videoURL, String thumbnailURL) {
             this.id = id;

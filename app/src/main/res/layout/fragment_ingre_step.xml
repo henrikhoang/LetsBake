@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/chocolate"
+    app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/cake_name_toolbar"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        app:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/Base.ThemeOverlay.AppCompat.ActionBar"
+        style="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:elevation="4dp"/>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/ingredient_card_view"
+        android:layout_height="wrap_content"
+        android:layout_width="@dimen/single_card_view_width"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/single_card_view_margin">
+        <TextView
+            android:id="@+id/tv_ingredients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:text="@string/ingredients_upper_case"
+            android:textAlignment="center"
+            android:padding="@dimen/normal_padding"/>
+
+    </android.support.v7.widget.CardView>
+         <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_steps_list_item"
+            android:layout_height="wrap_content"
+            android:layout_width="@dimen/single_card_view_width"
+            android:clipToPadding="false"
+            android:layout_gravity="center"
+            android:scrollbars="vertical"
+            android:layout_margin="@dimen/single_card_view_margin"/>
+
+
+</LinearLayout>

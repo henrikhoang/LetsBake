@@ -7,5 +7,6 @@
     <string name="backdrop_subtitle">Brought to you by Udacity\'s Cake Lovers</string>
     <string name="title_activity_ingredients">Recipe Details</string>
     <string name="ingredients_upper_case">INGREDIENTS</string>
+    <string name="title_activity_step">StepActivity</string>
 
 </resources>

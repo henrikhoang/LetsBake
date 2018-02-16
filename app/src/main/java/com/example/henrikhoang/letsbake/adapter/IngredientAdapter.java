@@ -35,6 +35,23 @@ public class IngredientAdapter extends
         mRecipe = recipe;
     }
 
+    class IngredientAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        final TextView mStepShortDescription;
+
+        public IngredientAdapterViewHolder(View itemView) {
+            super(itemView);
+            mStepShortDescription = (TextView) itemView.findViewById(R.id.tv_shortDescription);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int adapterPosition = getAdapterPosition();
+            Recipe.Steps step = mRecipe.getSTEPS().get(adapterPosition);
+            mClickHandler.onCLick(step);
+        }
+    }
     @Override
     public IngredientAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
@@ -52,7 +69,6 @@ public class IngredientAdapter extends
         int stepOrder = step.getId() + 1;
         Log.d(TAG, "STEP NUMBER: " + stepOrder);
         String shortDescription = step.getShortDescription();
-        holder.mStepOrderTextView.setText(String.valueOf(stepOrder));
         holder.mStepShortDescription.setText(shortDescription);
     }
 
@@ -67,23 +83,6 @@ public class IngredientAdapter extends
         notifyDataSetChanged();
     }
 
-    class IngredientAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        final TextView mStepOrderTextView;
-        final TextView mStepShortDescription;
-
-        public IngredientAdapterViewHolder(View itemView) {
-            super(itemView);
-            mStepShortDescription = (TextView) itemView.findViewById(R.id.tv_shortDescription);
-            mStepOrderTextView = (TextView) itemView.findViewById(R.id.tv_step_number);
-        }
-
-        @Override
-        public void onClick(View v) {
-            int adapterPosition = getAdapterPosition();
-            Recipe.Steps step = mRecipe.getSTEPS().get(adapterPosition);
-            mClickHandler.onCLick(step);
-        }
-    }
 
 }

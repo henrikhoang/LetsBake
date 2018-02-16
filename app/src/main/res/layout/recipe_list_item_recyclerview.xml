@@ -7,7 +7,9 @@
     android:background="@color/chocolate"
     app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior"
     tools:context="com.example.henrikhoang.letsbake.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/activity_main"
+    android:paddingTop="@dimen/cake_menu_padding_top">
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_recipe_list_item"
