@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.example.henrikhoang.letsbake.adapter.IngredientAdapter;
+import com.example.henrikhoang.letsbake.fragment.IngredientStepFragment;
 import com.example.henrikhoang.letsbake.fragment.RecipeThumbnailFragment;
 
 public class IngredientsActivity extends AppCompatActivity implements
@@ -26,6 +27,8 @@ public class IngredientsActivity extends AppCompatActivity implements
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         RecipeThumbnailFragment recipeThumbnailFragment = new RecipeThumbnailFragment();
+
+
         fragmentManager.beginTransaction()
                 .add(R.id.ingre_step_fragment, recipeThumbnailFragment)
                 .commit();
@@ -34,10 +37,10 @@ public class IngredientsActivity extends AppCompatActivity implements
     @Override
     public void onImageClicked() {
         Toast.makeText(this, "Image has been clicked", Toast.LENGTH_SHORT).show();
-//        IngredientStepFragment newFragment = new IngredientStepFragment();
-//        getSupportFragmentManager().beginTransaction()
-//                .replace(R.id.ingre_step_fragment, newFragment)
-//                .commit();
+        IngredientStepFragment newFragment = new IngredientStepFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.ingre_step_fragment, newFragment)
+                .commit();
     }
 
 

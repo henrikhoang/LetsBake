@@ -3,7 +3,6 @@ package com.example.henrikhoang.letsbake.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.henrikhoang.letsbake.R;
 import com.example.henrikhoang.letsbake.Recipe;
+import com.example.henrikhoang.letsbake.Step;
 
 /**
  * Created by henrikhoang on 2/6/18.
@@ -26,7 +26,7 @@ public class IngredientAdapter extends
     final private IngredientAdapterOnClickHandler mClickHandler;
 
     public interface IngredientAdapterOnClickHandler {
-        void onCLick(Recipe.Steps step);
+        void onCLick(Step step);
     }
 
     public IngredientAdapter(IngredientAdapterOnClickHandler clickHandler, @NonNull Context context, Recipe recipe) {
@@ -48,7 +48,7 @@ public class IngredientAdapter extends
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            Recipe.Steps step = mRecipe.getSTEPS().get(adapterPosition);
+            Step step = mRecipe.getSTEPS().get(adapterPosition);
             mClickHandler.onCLick(step);
         }
     }
@@ -65,9 +65,7 @@ public class IngredientAdapter extends
 
     @Override
     public void onBindViewHolder(IngredientAdapterViewHolder holder, int position) {
-        final Recipe.Steps step = mRecipe.getSTEPS().get(position);
-        int stepOrder = step.getId() + 1;
-        Log.d(TAG, "STEP NUMBER: " + stepOrder);
+        final Step step = mRecipe.getSTEPS().get(position);
         String shortDescription = step.getShortDescription();
         holder.mStepShortDescription.setText(shortDescription);
     }

@@ -10,14 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.example.henrikhoang.letsbake.R;
 import com.example.henrikhoang.letsbake.Recipe;
 import com.example.henrikhoang.letsbake.utility.ThumbnailUtil;
+import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by henrikhoang on 2/15/18.
@@ -28,6 +30,8 @@ public class RecipeThumbnailFragment extends Fragment {
     private static final String TAG = RecipeThumbnailFragment.class.getSimpleName();
 
     OnImageClickListener mCallback;
+
+    Unbinder unbinder;
 
     @BindView(R.id.iv_cake_backdrop)
     ImageView mRecipeThumbnail;
@@ -56,7 +60,7 @@ public class RecipeThumbnailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         final View rootView = (inflater.inflate(R.layout.fragment_cake_thumbnail, container, false));
-
+        unbinder = ButterKnife.bind(this, rootView);
         Recipe recipe = Parcels.unwrap(getActivity().getIntent().getParcelableExtra("recipe"));
         Log.d(TAG, "INFO RECEIVED IN FRAGMENT: " + recipe.getSTEPS().get(2).getDescription());
         Log.d(TAG, "RECIPE NAME: " + recipe.getNAME());
@@ -65,11 +69,25 @@ public class RecipeThumbnailFragment extends Fragment {
         Log.d(TAG, "Image Id: " + thumbnailId);
 
         try {
-            Glide.with(getContext()).load(thumbnailId).into(mRecipeThumbnail);
+            Picasso.with(getActivity().getApplicationContext()).load(thumbnailId).into(mRecipeThumbnail);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(TAG, "Cannot load image");
         }
+
+        mRecipeThumbnail.setOnClickListener(new ImageView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.onImageClicked();
+            }
+        });
+
         return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

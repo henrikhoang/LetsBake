@@ -18,12 +18,15 @@ import android.widget.Toast;
 import com.example.henrikhoang.letsbake.IngredientsActivity;
 import com.example.henrikhoang.letsbake.R;
 import com.example.henrikhoang.letsbake.Recipe;
+import com.example.henrikhoang.letsbake.Step;
 import com.example.henrikhoang.letsbake.StepActivity;
 import com.example.henrikhoang.letsbake.adapter.IngredientAdapter;
 
 import org.parceler.Parcels;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by henrikhoang
@@ -36,6 +39,7 @@ implements IngredientAdapter.IngredientAdapterOnClickHandler {
 
     private Recipe mRecipe;
 
+    Unbinder unbinder;
     @BindView(R.id.rv_steps_list_item)
     RecyclerView mStepsRecyclerView;
 
@@ -52,7 +56,7 @@ implements IngredientAdapter.IngredientAdapterOnClickHandler {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         final View rootView = inflater.inflate(R.layout.fragment_ingre_step, container, false);
-
+        unbinder = ButterKnife.bind(this, rootView);
         Recipe recipe = Parcels.unwrap(getActivity().getIntent().getParcelableExtra("recipe"));
         mRecipe = recipe;
         ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
@@ -72,12 +76,18 @@ implements IngredientAdapter.IngredientAdapterOnClickHandler {
     }
 
     @Override
-    public void onCLick(Recipe.Steps step) {
+    public void onCLick(Step step) {
         Toast.makeText(getContext(), "Step " + step.getId() + " was clicked", Toast.LENGTH_SHORT).show();
         Context context = getContext();
         Class destinationClass = StepActivity.class;
         Intent intent = new Intent(context, destinationClass);
         intent.putExtra("step", Parcels.wrap(step));
         startActivity(intent);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

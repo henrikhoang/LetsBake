@@ -33,7 +33,8 @@
         <activity
             android:name=".StepActivity"
             android:label="@string/title_activity_step"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".IngredientsActivity"/>
     </application>
 
 </manifest>

@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/iv_cake_backdrop"
-        android:fitsSystemWindows="true"
         android:scaleType="centerCrop"
         tools:src="@drawable/cheese_cake"/>
 

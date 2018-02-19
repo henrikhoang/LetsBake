@@ -13,8 +13,8 @@ import java.util.ArrayList;
 public class Recipe implements Serializable {
     String NAME;
     int ID;
-    ArrayList<Ingredients> INGREDIENTS;
-    ArrayList<Steps> STEPS;
+    ArrayList<Ingredient> INGREDIENTS = null;
+    ArrayList<Step> STEPS = null;
     int SERVINGS;
     String IMAGE_URL;
 
@@ -27,7 +27,7 @@ public class Recipe implements Serializable {
         this.IMAGE_URL = imageURL;
     }
 
-    public Recipe(int id, String name, ArrayList<Ingredients> ingredients, ArrayList<Steps> steps, int servings,
+    public Recipe(int id, String name, ArrayList<Ingredient> ingredients, ArrayList<Step> steps, int servings,
                   String imageURL) {
         this.ID =id;
         this.NAME = name;
@@ -53,19 +53,19 @@ public class Recipe implements Serializable {
         this.ID = ID;
     }
 
-    public ArrayList<Ingredients> getINGREDIENTS() {
+    public ArrayList<Ingredient> getINGREDIENTS() {
         return INGREDIENTS;
     }
 
-    public void setINGREDIENTS(ArrayList<Ingredients> INGREDIENTS) {
+    public void setINGREDIENTS(ArrayList<Ingredient> INGREDIENTS) {
         this.INGREDIENTS = INGREDIENTS;
     }
 
-    public ArrayList<Steps> getSTEPS() {
+    public ArrayList<Step> getSTEPS() {
         return STEPS;
     }
 
-    public void setSTEPS(ArrayList<Steps> STEPS) {
+    public void setSTEPS(ArrayList<Step> STEPS) {
         this.STEPS = STEPS;
     }
 
@@ -85,90 +85,5 @@ public class Recipe implements Serializable {
         this.IMAGE_URL = IMAGE_URL;
     }
 
-    public static class Ingredients implements Serializable {
-        int mQuantity;
-        String mMeasure;
-        String mIngredientName;
-
-
-
-        public Ingredients(int quantity, String measure, String ingredientName) {
-            this.mQuantity = quantity;
-            this.mMeasure = measure;
-            this.mIngredientName = ingredientName;
-        }
-        public int getQuantity() { return mQuantity;}
-
-        public String getMeasure() {return mMeasure;}
-
-        public String getIngredientName() { return mIngredientName;}
-
-        public void setmQuantity(int mQuantity) {
-            this.mQuantity = mQuantity;
-        }
-
-        public void setmMeasure(String mMeasure) {
-            this.mMeasure = mMeasure;
-        }
-
-        public void setmIngredientName(String mIngredientName) {
-            this.mIngredientName = mIngredientName;
-        }
-
-    }
-
-    public static class Steps implements Serializable {
-        int id;
-        String shortDescription;
-        String description;
-        String videoURL;
-        String thumbnailURL;
-
-
-        public Steps(int id, String shortDescription, String description, String videoURL, String thumbnailURL) {
-            this.id = id;
-            this.shortDescription = shortDescription;
-            this.description = description;
-            this.videoURL = videoURL;
-            this.thumbnailURL = thumbnailURL;
-        }
-        public int getId() {
-            return id;
-        }
-
-        public String getShortDescription() {return shortDescription;}
-
-        public String getDescription() {
-            return description;
-        }
-
-        public String getVideoURL() {
-            return videoURL;
-        }
-
-        public String getThumbnailURL() {
-            return thumbnailURL;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public void setShortDescription(String shortDescription) {
-            this.shortDescription = shortDescription;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
-        public void setVideoURL(String videoURL) {
-            this.videoURL = videoURL;
-        }
-
-        public void setThumbnailURL(String thumbnailURL) {
-            this.thumbnailURL = thumbnailURL;
-        }
-    }
 
 }

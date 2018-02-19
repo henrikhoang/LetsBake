@@ -2,7 +2,9 @@ package com.example.henrikhoang.letsbake.utility;
 
 import android.content.Context;
 
+import com.example.henrikhoang.letsbake.Ingredient;
 import com.example.henrikhoang.letsbake.Recipe;
+import com.example.henrikhoang.letsbake.Step;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,7 +46,7 @@ public final class OpenRecipeJsonUtils {
             recipe.setIMAGEURL(dish.getString(IMAGE));
             JSONArray ingredientsArray = dish.getJSONArray(INGREDIENTS);
 
-            ArrayList<Recipe.Ingredients> allIngredients = new ArrayList<>(); //List of ingredients of a SINGLE recipe
+            ArrayList<Ingredient> allIngredients = new ArrayList<>(); //List of ingredients of a SINGLE recipe
 
             for (int m = 0; m < ingredientsArray.length(); m++) {
                 JSONObject componentIngredient = ingredientsArray.getJSONObject(m);
@@ -53,12 +55,12 @@ public final class OpenRecipeJsonUtils {
                 String measurement = componentIngredient.getString(Imeasure);
                 String ingredientName = componentIngredient.getString(Iingredient);
 
-                Recipe.Ingredients tempIngredient = new Recipe.Ingredients(quantity, measurement, ingredientName);
+                Ingredient tempIngredient = new Ingredient(quantity, measurement, ingredientName);
                 allIngredients.add(tempIngredient); //A single ingredient is added to the list of ingredients
             }
 
             JSONArray stepsArray = dish.getJSONArray(STEPS);
-            ArrayList<Recipe.Steps> allSteps = new ArrayList<>(); //List of steps of a SINGLE recipe
+            ArrayList<Step> allSteps = new ArrayList<>(); //List of steps of a SINGLE recipe
 
             for (int n = 0; n < stepsArray.length(); n++) {
                 JSONObject listOfSteps = stepsArray.getJSONObject(n);
@@ -69,7 +71,7 @@ public final class OpenRecipeJsonUtils {
                 String videoURL = listOfSteps.getString(VIDEO_URL);
                 String thumbnailURL = listOfSteps.getString(THUMBNAIL_URL);
 
-                Recipe.Steps tempStep = new Recipe.Steps(id, shortDescription, description, videoURL, thumbnailURL);
+                Step tempStep = new Step(id, shortDescription, description, videoURL, thumbnailURL);
                 allSteps.add(tempStep); //A SINGLE step is added to the list of steps
             }
             recipe.setINGREDIENTS(allIngredients);
