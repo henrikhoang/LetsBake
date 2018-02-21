@@ -80,14 +80,14 @@ public class StepFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View rootView = (inflater.inflate(R.layout.fragment_step_view, container, false));
+        final View rootView = inflater.inflate(R.layout.fragment_step_view, container, false);
         unbinder = ButterKnife.bind(this, rootView);
         Step step = Parcels.unwrap(getActivity().getIntent().getParcelableExtra("step"));
         mStep = step;
         Log.d(TAG, "STEP INSTRUCTION: " + step.getDescription());
         String description = step.getDescription();
         mInstruction.setText(description);
-
+        componentListener = new ComponentListener();
         return rootView;
     }
 
