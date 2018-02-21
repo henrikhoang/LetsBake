@@ -51,7 +51,6 @@ public class RecipeThumbnailFragment extends Fragment {
         }
     }
 
-    private Recipe mRecipe;
     public RecipeThumbnailFragment() {
     }
 

@@ -7,4 +7,5 @@
     <color name="background_view">#f1f5f8</color>
     <color name="chocolate">#8B4513</color>
     <color name="colorDark">#111111</color>
+    <color name="playback_background">#CC000000</color>
 </resources>
