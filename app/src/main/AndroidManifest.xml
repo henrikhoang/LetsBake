@@ -47,8 +47,7 @@
         </receiver>
 
         <service
-            android:name=".widget.UpdateRecipeService"
-            android:exported="false"/>
+            android:name=".widget.UpdateRecipeService" />
 
     </application>
 

@@ -48,11 +48,12 @@ public class UpdateRecipeService extends IntentService {
     }
 
     private void handleActionUpdateRecipe() {
-        ArrayList<Recipe> recipes = new ArrayList<Recipe>();
+        ArrayList<Recipe> recipes = new ArrayList<>();
         try {
             URL recipeRequestURL = NetworkUtility.buildURL(mContext);
             String jsonRecipeResponse = NetworkUtility.getResponseFromHttpUrl(recipeRequestURL);
             recipes = OpenRecipeJsonUtils.getRecipeFromJson(mContext, jsonRecipeResponse);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

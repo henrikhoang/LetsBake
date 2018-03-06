@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.example.henrikhoang.letsbake.MainActivity;
@@ -17,6 +18,7 @@ import java.util.List;
  * Implementation of App Widget functionality.
  */
 public class RecipeWidgetProvider extends AppWidgetProvider {
+    public static final String TAG = RecipeWidgetProvider.class.getSimpleName();
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, List<Recipe> recipes,
                                 int appWidgetId) {
@@ -33,7 +35,10 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
         updatingIntent.setAction(UpdateRecipeService.ACTION_UPDATE_INGREDIENTS);
         PendingIntent updatingPendingIntent = PendingIntent.getService(context, 0, updatingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.button_load_recipe_ingredient, updatingPendingIntent);
-        views.setTextViewText(R.id.tv_widget_ingredient, recipes.get(0).getINGREDIENTS().get(0).getIngredientName());
+
+        Log.d(TAG, "INTENT SERVICE SUCCESSFUL: " + recipes.get(0).getINGREDIENTS().get(0).getIngredientName());
+        Log.d(TAG, "INTENT SERVICE SUCCESSFUL: " + recipes.get(0).getNAME());
+//        views.setTextViewText(R.id.tv_widget_ingredient, recipes.get(0).getINGREDIENTS().get(0).getIngredientName());
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
