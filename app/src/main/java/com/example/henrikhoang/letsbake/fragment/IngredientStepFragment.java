@@ -40,11 +40,13 @@ implements IngredientAdapter.IngredientAdapterOnClickHandler {
     private Recipe mRecipe;
 
     Unbinder unbinder;
+
     @BindView(R.id.rv_steps_list_item)
     RecyclerView mStepsRecyclerView;
 
     @BindView(R.id.cake_name_toolbar)
     Toolbar mToolbar;
+
 
     private IngredientAdapter mIngredientAdapter;
     private static final String TAG = IngredientsActivity.class.getSimpleName();
@@ -70,7 +72,6 @@ implements IngredientAdapter.IngredientAdapterOnClickHandler {
         mStepsRecyclerView.setLayoutManager(layoutManager);
         mStepsRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-
         return rootView;
 
     }
@@ -81,6 +82,7 @@ implements IngredientAdapter.IngredientAdapterOnClickHandler {
         Context context = getContext();
         Class destinationClass = StepActivity.class;
         Intent intent = new Intent(context, destinationClass);
+        intent.putExtra("recipe", Parcels.wrap(mRecipe));
         intent.putExtra("step", Parcels.wrap(step));
         startActivity(intent);
     }

@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="@dimen/widget_margin"
+    android:id="@+id/widget_layout">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cheese Cake"
+        android:textSize="30sp"
+        android:id="@+id/tv_widget_recipe_name"
+        android:background="@android:color/holo_green_dark"/>
+
+    <Button
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/tv_widget_recipe_name"
+        android:layout_above="@+id/tv_widget_ingredient"
+        android:id="@+id/button_load_recipe_ingredient"/>
+
+    <TextView
+        android:id="@+id/tv_widget_ingredient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/button_load_recipe_ingredient"
+        tools:text="Test" />
+
+
+</RelativeLayout>

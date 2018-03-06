@@ -10,12 +10,12 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/cake_name_toolbar"
-        android:layout_height="?attr/actionBarSize"
         android:layout_width="match_parent"
-        app:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/Base.ThemeOverlay.AppCompat.ActionBar"
-        style="@style/ThemeOverlay.AppCompat.ActionBar"
-        android:elevation="4dp"/>
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+
+        android:theme="@style/AppTheme" />
 
     <android.support.v7.widget.CardView
         android:id="@+id/ingredient_card_view"
