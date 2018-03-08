@@ -25,15 +25,6 @@ public class UpdateRecipeService extends IntentService {
     public static final String ACTION_UPDATE_INGREDIENTS = "com.example.henrikhoang.letsbake.";
 
     public static final String TAG = UpdateRecipeService.class.getSimpleName();
-    /**
-     * Creates an IntentService.  Invoked by your subclass's constructor.
-     *
-     * @param name Used to name the worker thread, important only for debugging.
-     */
-
-    public UpdateRecipeService(String name) {
-        super(name);
-    }
 
     public UpdateRecipeService() {super(UpdateRecipeService.class.getName());}
 
@@ -53,7 +44,6 @@ public class UpdateRecipeService extends IntentService {
             URL recipeRequestURL = NetworkUtility.buildURL(mContext);
             String jsonRecipeResponse = NetworkUtility.getResponseFromHttpUrl(recipeRequestURL);
             recipes = OpenRecipeJsonUtils.getRecipeFromJson(mContext, jsonRecipeResponse);
-
             } catch (Exception e) {
                 e.printStackTrace();
             }

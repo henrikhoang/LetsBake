@@ -1,14 +1,11 @@
 package com.example.henrikhoang.letsbake.widget;
 
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.RemoteViews;
 
-import com.example.henrikhoang.letsbake.MainActivity;
 import com.example.henrikhoang.letsbake.R;
 import com.example.henrikhoang.letsbake.Recipe;
 
@@ -25,28 +22,25 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
 
 
         // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
-        Intent intent = new Intent(context, MainActivity.class);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-        views.setOnClickPendingIntent(R.id.tv_widget_recipe_name, pendingIntent);
-
-        Intent updatingIntent = new Intent(context, UpdateRecipeService.class);
-        updatingIntent.setAction(UpdateRecipeService.ACTION_UPDATE_INGREDIENTS);
-        PendingIntent updatingPendingIntent = PendingIntent.getService(context, 0, updatingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        views.setOnClickPendingIntent(R.id.button_load_recipe_ingredient, updatingPendingIntent);
-
-        Log.d(TAG, "INTENT SERVICE SUCCESSFUL: " + recipes.get(0).getINGREDIENTS().get(0).getIngredientName());
-        Log.d(TAG, "INTENT SERVICE SUCCESSFUL: " + recipes.get(0).getNAME());
-//        views.setTextViewText(R.id.tv_widget_ingredient, recipes.get(0).getINGREDIENTS().get(0).getIngredientName());
+       RemoteViews rv;
+       rv = getRecipeGridRemoteView(context);
         // Instruct the widget manager to update the widget
-        appWidgetManager.updateAppWidget(appWidgetId, views);
+        appWidgetManager.updateAppWidget(appWidgetId, rv);
+    }
+
+    private static RemoteViews getRecipeGridRemoteView(Context context) {
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
+        Intent intent = new Intent(context, GridWidgetService.class);
+        views.setRemoteAdapter(R.id.widget_grid_view, intent);
+        views.setEmptyView(R.id.widget_grid_view, R.id.empty_widget_layout);
+        return views;
     }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
         UpdateRecipeService.startActionUpdateRecipe(context);
+
     }
 
     public static void updateRecipeIngredients(Context context, AppWidgetManager appWidgetManager,
