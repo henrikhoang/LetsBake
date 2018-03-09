@@ -16,7 +16,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.henrikhoang.letsbake.R;
-import com.example.henrikhoang.letsbake.Recipe;
 import com.example.henrikhoang.letsbake.Step;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -28,8 +27,6 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-
-import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,10 +65,12 @@ public class StepFragment extends Fragment {
     Toolbar mToolbar;
 
     OnButtonClickListener mCallback;
-    private Step mStep;
-    private Recipe mRecipe;
+    private Step mStep = null;
 
-    private int stepIndex;
+    private String mVideoURL;
+
+
+
 
     public interface OnButtonClickListener {
         void onPreviousButtonClicked();
@@ -98,43 +97,46 @@ public class StepFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_step_view, container, false);
         unbinder = ButterKnife.bind(this, rootView);
 
-        Step step = Parcels.unwrap(getActivity().getIntent().getParcelableExtra("step"));
+        if (mStep != null) {
+            mVideoURL = mStep.getVideoURL();
+            ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+            mToolbar.setTitle(mStep.getShortDescription());
 
-        mStep = step;
+            String description = mStep.getDescription();
+            mInstruction.setText(description);
+            Log.d(TAG, "VIDEO URL CHECK: " + mStep.getVideoURL());
+            if (mStep.getVideoURL() == null || mStep.getVideoURL() == "") {
+                mPlayerView.setVisibility(View.GONE);
+            } else {
+                mPlayerView.setVisibility(View.VISIBLE);
+            }
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
-        mToolbar.setTitle(mStep.getShortDescription());
+            mPreviousButton.setOnClickListener(new ImageButton.OnClickListener() {
 
-        String description = mStep.getDescription();
-        mInstruction.setText(description);
-        Log.d(TAG, "VIDEO URL CHECK: " + mStep.getVideoURL());
-        if (mStep.getVideoURL() == null || mStep.getVideoURL() == "") {
-            mPlayerView.setVisibility(View.GONE);
-        } else {
-            mPlayerView.setVisibility(View.VISIBLE);
+                @Override
+                public void onClick(View v) {
+                    mCallback.onPreviousButtonClicked();
+                }
+            });
+
+            mNextButton.setOnClickListener(new ImageButton.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mCallback.onNextButtonClicked();
+                }
+            });
         }
+            return rootView;
 
-//        mPreviousButton.setOnClickListener(new ImageButton.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                    mCallback.onPreviousButtonClicked();
-//                }
-//            });
-//
-//        mNextButton.setOnClickListener(new ImageButton.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                    mCallback.onNextButtonClicked();
-//                }
-//            });
-        return rootView;
     }
 
+    public void updateDataStep(Step step) {
+        this.mStep = step;
+    }
     @Override
     public void onStart() {
         super.onStart();
-        if (Util.SDK_INT > 23) {
+        if (Util.SDK_INT > 23 && (mVideoURL != null || !mVideoURL.equals(""))) {
             initializePlayer();
         }
     }
@@ -144,7 +146,7 @@ public class StepFragment extends Fragment {
         super.onResume();
         hideSystemUi();
         Log.d(TAG, "onResume");
-        if ((Util.SDK_INT <= 23 || player == null)) {
+        if ((Util.SDK_INT <= 23 || player == null) && (mVideoURL != null || !mVideoURL.equals(""))) {
             initializePlayer();
         }
     }
@@ -172,7 +174,7 @@ public class StepFragment extends Fragment {
     }
 
     public void initializePlayer() {
-        if (player == null) {
+        if (player == null ) {
             player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(getContext()),
                     new DefaultTrackSelector(), new DefaultLoadControl());
             mPlayerView.setPlayer(player);

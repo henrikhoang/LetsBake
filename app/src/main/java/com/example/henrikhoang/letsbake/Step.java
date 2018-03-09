@@ -1,5 +1,7 @@
 package com.example.henrikhoang.letsbake;
 
+import android.os.Parcelable;
+
 import org.parceler.Parcel;
 
 import java.io.Serializable;

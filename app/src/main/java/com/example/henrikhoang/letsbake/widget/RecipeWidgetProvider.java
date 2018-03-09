@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.example.henrikhoang.letsbake.R;
@@ -31,6 +32,12 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
     private static RemoteViews getRecipeGridRemoteView(Context context) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
         Intent intent = new Intent(context, GridWidgetService.class);
+        views.setTextViewText(R.id.button_nutellaPie, context.getResources().getString(R.string.nutella_pie));
+        Log.d(TAG, "CALLING WIDGET BUTTON: " + context.getResources().getString(R.string.nutella_pie));
+        views.setTextViewText(R.id.button_brownies, context.getResources().getString(R.string.brownies));
+        views.setTextViewText(R.id.button_cheeseCake, context.getResources().getString(R.string.cheese_cake));
+        views.setTextViewText(R.id.button_yellowCake, context.getResources().getString(R.string.yellow_cake));
+
         views.setRemoteAdapter(R.id.widget_grid_view, intent);
         views.setEmptyView(R.id.widget_grid_view, R.id.empty_widget_layout);
         return views;

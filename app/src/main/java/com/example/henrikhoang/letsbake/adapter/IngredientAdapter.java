@@ -1,6 +1,7 @@
 package com.example.henrikhoang.letsbake.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import com.example.henrikhoang.letsbake.R;
 import com.example.henrikhoang.letsbake.Recipe;
 import com.example.henrikhoang.letsbake.Step;
+
+import org.parceler.Parcels;
 
 /**
  * Created by henrikhoang on 2/6/18.
@@ -26,7 +29,7 @@ public class IngredientAdapter extends
     final private IngredientAdapterOnClickHandler mClickHandler;
 
     public interface IngredientAdapterOnClickHandler {
-        void onCLick(Step step);
+        void onCLick(Bundle bundle);
     }
 
     public IngredientAdapter(IngredientAdapterOnClickHandler clickHandler, @NonNull Context context, Recipe recipe) {
@@ -48,8 +51,10 @@ public class IngredientAdapter extends
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            Step step = mRecipe.getSTEPS().get(adapterPosition);
-            mClickHandler.onCLick(step);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("list of steps", Parcels.wrap(mRecipe.getSTEPS()));
+            bundle.putInt("step index", adapterPosition);
+            mClickHandler.onCLick(bundle);
         }
     }
     @Override

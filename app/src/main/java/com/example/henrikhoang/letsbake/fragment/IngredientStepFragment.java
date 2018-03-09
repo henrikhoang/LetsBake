@@ -10,6 +10,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,6 @@ import android.widget.Toast;
 import com.example.henrikhoang.letsbake.IngredientsActivity;
 import com.example.henrikhoang.letsbake.R;
 import com.example.henrikhoang.letsbake.Recipe;
-import com.example.henrikhoang.letsbake.Step;
 import com.example.henrikhoang.letsbake.StepActivity;
 import com.example.henrikhoang.letsbake.adapter.IngredientAdapter;
 
@@ -77,13 +77,17 @@ implements IngredientAdapter.IngredientAdapterOnClickHandler {
     }
 
     @Override
-    public void onCLick(Step step) {
-        Toast.makeText(getContext(), "Step " + step.getId() + " was clicked", Toast.LENGTH_SHORT).show();
+    public void onCLick(Bundle bundle) {
+        int index = bundle.getInt("step index");
+
+        Log.d(TAG, "STEP INDEX ACQUIRED :" + index);
+
+        Toast.makeText(getContext(), "Step " + index + " was clicked", Toast.LENGTH_SHORT).show();
         Context context = getContext();
         Class destinationClass = StepActivity.class;
         Intent intent = new Intent(context, destinationClass);
-        intent.putExtra("recipe", Parcels.wrap(mRecipe));
-        intent.putExtra("step", Parcels.wrap(step));
+        intent.putExtras(bundle);
+
         startActivity(intent);
     }
 
