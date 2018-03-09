@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@android:color/holo_green_light">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_widget_ingredient_name"
+        tools:text="GrahamCrum what the hell"
+        tools:background="@android:color/holo_green_light"
+        android:layout_margin="@dimen/widget_margin"
+        android:layout_weight="3"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_widget_quantity"
+        android:layout_weight="1"
+        tools:text="3 TBS"
+        android:text="@android:color/black"/>
+
+
+</LinearLayout>
