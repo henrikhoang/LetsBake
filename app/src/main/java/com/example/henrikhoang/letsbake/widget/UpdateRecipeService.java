@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 
+import com.example.henrikhoang.letsbake.IdlingResource.SimpleIdlingResource;
 import com.example.henrikhoang.letsbake.Recipe;
 import com.example.henrikhoang.letsbake.utility.NetworkUtility;
 import com.example.henrikhoang.letsbake.utility.OpenRecipeJsonUtils;
@@ -22,9 +23,11 @@ public class UpdateRecipeService extends IntentService {
 
     private static Context mContext;
 
-    public static final String ACTION_UPDATE_INGREDIENTS = "com.example.henrikhoang.letsbake.";
+    public static final String ACTION_UPDATE_INGREDIENTS = "com.example.henrikhoang.letsbake.update_ingredients";
 
+    public static final String ACTION_SELECTED_INGREDIENT ="com.example.henrikhoang.letsbake.update_selected_recipe";
     public static final String TAG = UpdateRecipeService.class.getSimpleName();
+
 
     public UpdateRecipeService() {super(UpdateRecipeService.class.getName());}
 
@@ -35,6 +38,7 @@ public class UpdateRecipeService extends IntentService {
             if (ACTION_UPDATE_INGREDIENTS.equals(action)) {
                 handleActionUpdateRecipe();
             }
+
         }
     }
 
@@ -43,7 +47,7 @@ public class UpdateRecipeService extends IntentService {
         try {
             URL recipeRequestURL = NetworkUtility.buildURL(mContext);
             String jsonRecipeResponse = NetworkUtility.getResponseFromHttpUrl(recipeRequestURL);
-            recipes = OpenRecipeJsonUtils.getRecipeFromJson(mContext, jsonRecipeResponse);
+            recipes = OpenRecipeJsonUtils.getRecipeFromJson(mContext, jsonRecipeResponse, new SimpleIdlingResource());
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -20,7 +20,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/tv_widget_quantity"
-        android:layout_weight="1"
+        android:layout_weight="1.5"
         tools:text="3 TBS"
         android:text="@android:color/black"/>
 

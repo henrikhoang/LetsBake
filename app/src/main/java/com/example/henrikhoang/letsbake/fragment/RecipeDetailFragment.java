@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,13 +15,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.henrikhoang.letsbake.IngredientsActivity;
+import com.example.henrikhoang.letsbake.IngredientActivity;
+import com.example.henrikhoang.letsbake.RecipeDetailsActivity;
 import com.example.henrikhoang.letsbake.R;
 import com.example.henrikhoang.letsbake.Recipe;
 import com.example.henrikhoang.letsbake.StepActivity;
-import com.example.henrikhoang.letsbake.adapter.IngredientAdapter;
+import com.example.henrikhoang.letsbake.adapter.StepAdapter;
 
 import org.parceler.Parcels;
 
@@ -32,10 +35,10 @@ import butterknife.Unbinder;
  * Created by henrikhoang
  */
 
-public class IngredientStepFragment extends Fragment
-implements IngredientAdapter.IngredientAdapterOnClickHandler {
+public class RecipeDetailFragment extends Fragment
+implements StepAdapter.StepAdapterOnClickHandler {
 
-    private static final String tag = IngredientStepFragment.class.getSimpleName();
+    private static final String tag = RecipeDetailFragment.class.getSimpleName();
 
     private Recipe mRecipe;
 
@@ -47,11 +50,16 @@ implements IngredientAdapter.IngredientAdapterOnClickHandler {
     @BindView(R.id.cake_name_toolbar)
     Toolbar mToolbar;
 
+    @BindView(R.id.ingredient_card_view)
+    CardView mCardView;
 
-    private IngredientAdapter mIngredientAdapter;
-    private static final String TAG = IngredientsActivity.class.getSimpleName();
+    @BindView(R.id.tv_ingredients)
+    TextView mIngredientsTextView;
 
-    public IngredientStepFragment() {}
+    private StepAdapter mStepAdapter;
+    private static final String TAG = RecipeDetailsActivity.class.getSimpleName();
+
+    public RecipeDetailFragment() {}
 
     @Nullable
     @Override
@@ -64,14 +72,25 @@ implements IngredientAdapter.IngredientAdapterOnClickHandler {
         ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
         mToolbar.setTitle(recipe.getNAME());
 
-        mIngredientAdapter = new IngredientAdapter(this, this.getContext(), mRecipe);
-        mIngredientAdapter.setStepData(recipe);
-        mStepsRecyclerView.setAdapter(mIngredientAdapter);
+        mStepAdapter = new StepAdapter(this, this.getContext(), mRecipe);
+        mStepAdapter.setStepData(recipe);
+        mStepsRecyclerView.setAdapter(mStepAdapter);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mStepsRecyclerView.setLayoutManager(layoutManager);
         mStepsRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
+        mIngredientsTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Link to Ingredient
+                Context context = getContext();
+                Class destinationClass = IngredientActivity.class;
+                Intent intent = new Intent(context, destinationClass);
+                intent.putExtra("recipe", Parcels.wrap(mRecipe));
+                startActivity(intent);
+            }
+        });
         return rootView;
 
     }

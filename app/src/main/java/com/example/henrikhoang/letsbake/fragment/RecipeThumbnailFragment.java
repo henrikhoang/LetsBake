@@ -2,16 +2,22 @@ package com.example.henrikhoang.letsbake.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.example.henrikhoang.letsbake.IdlingResource.SimpleIdlingResource;
 import com.example.henrikhoang.letsbake.R;
 import com.example.henrikhoang.letsbake.Recipe;
+import com.example.henrikhoang.letsbake.RecipeDetailsActivity;
 import com.example.henrikhoang.letsbake.utility.ThumbnailUtil;
 import com.squareup.picasso.Picasso;
 
@@ -36,6 +42,25 @@ public class RecipeThumbnailFragment extends Fragment {
     @BindView(R.id.iv_cake_backdrop)
     ImageView mRecipeThumbnail;
 
+    @BindView(R.id.tv_recipe_name_load_scr)
+    TextView mRecipeNameTextView;
+
+    @Nullable
+    private SimpleIdlingResource mIdlingResource = new SimpleIdlingResource();
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new SimpleIdlingResource();
+        }
+        return mIdlingResource;
+    }
+
+    public void setIdlingResource(SimpleIdlingResource idlingResource) {
+        RecipeDetailsActivity.mIdlingResource = idlingResource;
+    }
+
     public interface OnImageClickListener {
         void onImageClicked();
     }
@@ -58,6 +83,8 @@ public class RecipeThumbnailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        mIdlingResource.setIdleState(false);
+
         final View rootView = (inflater.inflate(R.layout.fragment_cake_thumbnail, container, false));
         unbinder = ButterKnife.bind(this, rootView);
         Recipe recipe = Parcels.unwrap(getActivity().getIntent().getParcelableExtra("recipe"));
@@ -68,7 +95,9 @@ public class RecipeThumbnailFragment extends Fragment {
         Log.d(TAG, "Image Id: " + thumbnailId);
 
         try {
-            Picasso.with(getActivity().getApplicationContext()).load(thumbnailId).into(mRecipeThumbnail);
+            Picasso.get().load(thumbnailId).into(mRecipeThumbnail);
+            mRecipeNameTextView.setText(recipe.getNAME());
+//
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(TAG, "Cannot load image");
@@ -80,6 +109,10 @@ public class RecipeThumbnailFragment extends Fragment {
                 mCallback.onImageClicked();
             }
         });
+
+        mIdlingResource.setIdleState(true);
+        getIdlingResource();
+        setIdlingResource(mIdlingResource);
 
         return rootView;
     }

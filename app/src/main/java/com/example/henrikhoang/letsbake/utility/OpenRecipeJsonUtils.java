@@ -1,7 +1,9 @@
 package com.example.henrikhoang.letsbake.utility;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 
+import com.example.henrikhoang.letsbake.IdlingResource.SimpleIdlingResource;
 import com.example.henrikhoang.letsbake.Ingredient;
 import com.example.henrikhoang.letsbake.Recipe;
 import com.example.henrikhoang.letsbake.Step;
@@ -31,8 +33,13 @@ public final class OpenRecipeJsonUtils {
     private static final String SERVINGS = "servings";
     private static final String IMAGE = "image";
 
-    public static ArrayList<Recipe> getRecipeFromJson(Context context, String recipeJsonStr)
+    public static ArrayList<Recipe> getRecipeFromJson(Context context, String recipeJsonStr,
+                                                      @Nullable final SimpleIdlingResource idlingResource)
     throws JSONException {
+
+        if (idlingResource != null) {
+            idlingResource.setIdleState(false);
+        }
 
         JSONArray recipeArray = new JSONArray(recipeJsonStr);
         ArrayList<Recipe> recipes = new ArrayList<>(); //List of recipes
@@ -78,6 +85,11 @@ public final class OpenRecipeJsonUtils {
             recipe.setSTEPS(allSteps);
             recipes.add(recipe);
         }
+
+        if (idlingResource != null) {
+            idlingResource.setIdleState(true);
+        }
+
         return recipes;
     }
 }

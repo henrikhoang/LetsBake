@@ -65,8 +65,7 @@ StepFragment.OnButtonClickListener {
             newStepFragment.updateDataStep(mSteps.get(localStepIndex- 1));
 
             localStepIndex = localStepIndex - 1;
-
-                fragmentManager.beginTransaction()
+            fragmentManager.beginTransaction()
                         .replace(R.id.step_fragment, newStepFragment)
                         .commit();
         }
@@ -76,7 +75,7 @@ StepFragment.OnButtonClickListener {
 
     @Override
     public void onNextButtonClicked() {
-        if (localStepIndex == mSteps.size()) {
+        if (localStepIndex == mSteps.size() - 1) {
             Log.d(TAG, "onNextButtonClicked localStepIndex: " + localStepIndex + "Step size: " + mSteps.size());
             Toast.makeText(this, getResources().getString(R.string.last_step_notification), Toast.LENGTH_LONG).show();
         } else {
@@ -86,8 +85,7 @@ StepFragment.OnButtonClickListener {
             newStepFragment.updateDataStep(mSteps.get(localStepIndex + 1));
 
             localStepIndex = localStepIndex + 1;
-
-                fragmentManager.beginTransaction()
+            fragmentManager.beginTransaction()
                         .replace(R.id.step_fragment, newStepFragment)
                         .commit();
 

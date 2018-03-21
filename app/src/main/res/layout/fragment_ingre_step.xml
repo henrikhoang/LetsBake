@@ -14,7 +14,6 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
         android:elevation="4dp"
-
         android:theme="@style/AppTheme" />
 
     <android.support.v7.widget.CardView
@@ -22,7 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_width="@dimen/single_card_view_width"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/single_card_view_margin">
+        android:layout_margin="@dimen/single_card_view_margin"
+        app:cardCornerRadius="@dimen/card_corner_radius">
         <TextView
             android:id="@+id/tv_ingredients"
             android:layout_width="match_parent"

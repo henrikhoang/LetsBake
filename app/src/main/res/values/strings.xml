@@ -14,4 +14,6 @@
     <string name="add_widget">Add widget</string>
     <string name="first_step_notification">You are already at the first step!</string>
     <string name="last_step_notification">You are already at the last step!</string>
+    <string name="instruction">Tap Any Where To Start</string>
+    <string name="loading_data">Loading Recipes</string>
 </resources>

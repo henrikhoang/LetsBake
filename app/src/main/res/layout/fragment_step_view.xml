@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
-        android:elevation="4dp"
+        android:elevation="@dimen/toolbar_elevation"
         android:theme="@style/AppTheme"
         app:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
@@ -20,8 +20,8 @@
         android:id="@+id/tv_step_instruction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginTop="8dp"
+        android:layout_margin="@dimen/normal_padding"
+        android:layout_marginTop="@dimen/normal_padding"
         android:padding="@dimen/normal_padding"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/playerView"
@@ -33,44 +33,40 @@
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
         android:id="@+id/playerView"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="@dimen/exoplayer_height"
+        android:layout_marginLeft="@dimen/exoplayer_padding"
+        android:layout_marginRight="@dimen/exoplayer_padding"
+        android:layout_marginTop="@dimen/exoplayer_padding"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/step_toolbar" />
 
 
-    <FrameLayout
-        android:layout_width="wrap_content"
+    <ImageButton
+        android:id="@+id/button_previous_step"
+        android:layout_width="@dimen/navigation_button_width"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@+id/playerView"
+        android:layout_marginBottom="@dimen/navigation_button_padding"
+        android:layout_marginStart="@dimen/navigation_button_padding"
+        android:contentDescription="@string/previous_step"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/ic_media_previous"
+        android:layout_marginLeft="@dimen/navigation_button_padding"
+        android:background="@color/colorAccent"/>
 
-        <ImageButton
-            android:id="@+id/button_previous_step"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/previous_step"
-            app:srcCompat="@android:drawable/ic_media_previous" />
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="wrap_content"
+    <ImageButton
+        android:id="@+id/button_next_step"
+        android:layout_width="@dimen/navigation_button_width"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/navigation_button_padding"
+        android:layout_marginEnd="@dimen/navigation_button_padding"
+        android:contentDescription="@string/next_step"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintRight_toRightOf="@+id/playerView">
-
-        <ImageButton
-            android:id="@+id/button_next_step"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/next_step"
-            app:srcCompat="@android:drawable/ic_media_next" />
-    </FrameLayout>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_media_next"
+        android:background="@color/colorAccent"
+        android:layout_marginRight="@dimen/navigation_button_padding" />
 
 
 </android.support.constraint.ConstraintLayout>

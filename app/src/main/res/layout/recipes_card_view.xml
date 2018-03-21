@@ -22,8 +22,6 @@
                 android:id="@+id/iv_recipe_thumbnail"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/recipe_thumbnail_height"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
                 android:scaleType="fitXY"
                 tools:src="@drawable/nutella_pie"/>
 

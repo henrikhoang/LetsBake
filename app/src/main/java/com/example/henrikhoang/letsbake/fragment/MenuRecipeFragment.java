@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -24,9 +27,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
-import com.example.henrikhoang.letsbake.IngredientsActivity;
+import com.example.henrikhoang.letsbake.IdlingResource.SimpleIdlingResource;
+import com.example.henrikhoang.letsbake.MainActivity;
 import com.example.henrikhoang.letsbake.R;
 import com.example.henrikhoang.letsbake.Recipe;
+import com.example.henrikhoang.letsbake.RecipeDetailsActivity;
 import com.example.henrikhoang.letsbake.adapter.RecipesListAdapter;
 import com.example.henrikhoang.letsbake.utility.NetworkUtility;
 import com.example.henrikhoang.letsbake.utility.OpenRecipeJsonUtils;
@@ -49,6 +54,9 @@ public class MenuRecipeFragment extends Fragment
 LoaderManager.LoaderCallbacks<List<Recipe>> {
 
     private static final String TAG = MenuRecipeFragment.class.getSimpleName();
+
+    @Nullable
+    private SimpleIdlingResource mIdlingResource;
 
     private RecipesListAdapter mRecipeAdapter;
     private static final int RECIPE_LOADER_ID =1231;
@@ -74,6 +82,20 @@ LoaderManager.LoaderCallbacks<List<Recipe>> {
 
     public MenuRecipeFragment() {
     }
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new SimpleIdlingResource();
+        }
+        return mIdlingResource;
+    }
+
+    public void setIdlingResource(SimpleIdlingResource idlingResource) {
+        MainActivity.mIdlingResource = idlingResource;
+    }
+
 
     @Nullable
     @Override
@@ -101,6 +123,9 @@ LoaderManager.LoaderCallbacks<List<Recipe>> {
         Bundle bundleForLoader = null;
         ((AppCompatActivity)getActivity()).getSupportLoaderManager().initLoader(loaderId, bundleForLoader, callbacks);
 
+        getIdlingResource();
+        setIdlingResource(mIdlingResource);
+
         return rootView;
     }
 
@@ -116,7 +141,7 @@ LoaderManager.LoaderCallbacks<List<Recipe>> {
         Log.d(TAG, "ID that has been sent: " + recipe.getID());
 
         Context context = getContext();
-        Class destinationClass = IngredientsActivity.class;
+        Class destinationClass = RecipeDetailsActivity.class;
         Intent intent = new Intent(context, destinationClass);
         intent.putExtra("recipe", Parcels.wrap(recipe));
         startActivity(intent);
@@ -142,7 +167,7 @@ LoaderManager.LoaderCallbacks<List<Recipe>> {
                     URL recipeRequestURL = NetworkUtility.buildURL(getActivity());
                     String jsonRecipeResponse = NetworkUtility.getResponseFromHttpUrl(recipeRequestURL);
                     List<Recipe> recipes = OpenRecipeJsonUtils.getRecipeFromJson(getActivity(),
-                            jsonRecipeResponse);
+                            jsonRecipeResponse, mIdlingResource);
                     return recipes;
                 } catch (Exception e) {
                     e.printStackTrace();
