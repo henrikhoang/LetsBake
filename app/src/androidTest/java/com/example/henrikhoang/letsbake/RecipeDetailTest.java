@@ -33,12 +33,8 @@ public class RecipeDetailTest {
             = new ActivityTestRule<>(MainActivity.class);
 
 
-    @Rule
-    public ActivityTestRule<RecipeDetailsActivity> secondActivityTestRule
-            = new ActivityTestRule<>(RecipeDetailsActivity.class);
-
     private IdlingResource mIdlingResource1;
-    private IdlingResource mIdlingResource2;
+
 
 
     @Before
@@ -51,9 +47,9 @@ public class RecipeDetailTest {
     @Before
     public void registerIdlingResource() {
         mIdlingResource1 = mActivityTestRule.getActivity().getIdlingResource();
-        mIdlingResource2 = secondActivityTestRule.getActivity().getIdlingResource();
+
         Espresso.registerIdlingResources(mIdlingResource1);
-        Espresso.registerIdlingResources(mIdlingResource2);
+
     }
 
     @Test
@@ -73,9 +69,6 @@ public class RecipeDetailTest {
     public void unregisterIdlingResource() {
         if (mIdlingResource1 != null) {
             Espresso.unregisterIdlingResources(mIdlingResource1);
-        }
-        if (mIdlingResource2 != null) {
-            Espresso.unregisterIdlingResources(mIdlingResource2);
         }
     }
 }
