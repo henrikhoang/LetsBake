@@ -3,6 +3,7 @@ package com.example.henrikhoang.letsbake.widget;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -22,21 +23,23 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
     private static final String ACTION_CHEESE_CAKE = "com.example.henrikhoang.letsbake.CHEESE_CAKE";
     public static Recipe mRecipe;
 
-    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, Recipe recipe,
-                                       int[] appWidgetIds) {
+    public static void updateAppWidget(Context context, Recipe recipe) {
+            mRecipe = recipe;
+             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        ComponentName thisAppWidget = new ComponentName(context.getPackageName(), RecipeWidgetProvider.class.getName());
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
 
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
 
-        for (int appWidgetId : appWidgetIds) {
-            // Construct the RemoteViews object
-           mRecipe = recipe;
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
-            Intent adapterIntent = new Intent(context, GridWidgetService.class);
-            GridWidgetService.setRecipeData(mRecipe);
-            Log.d(TAG, "RECIPEWIDGETPROVIDER: " + mRecipe.getNAME());
+        Intent adapterIntent = new Intent(context, GridWidgetService.class);
+        if (mRecipe != null) {
+            GridWidgetService.setRecipeData(recipe);
+            Log.d(TAG, mRecipe.getNAME());
             views.setRemoteAdapter(R.id.widget_grid_view, adapterIntent);
-            appWidgetManager.updateAppWidget(appWidgetId, views);
-
         }
+
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_grid_view);
+        appWidgetManager.updateAppWidget(appWidgetIds, views);
     }
 
     protected static PendingIntent getPendingIntent(Context context, String action) {
@@ -49,6 +52,8 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         String action = intent.getAction();
+
+
         if (ACTION_NUTELLA_PIE.equals(intent.getAction())) {
             UpdateRecipeService.startActionUpdateRecipe(context, action);
             Log.d(TAG, "Action is Clicked");
@@ -70,7 +75,6 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             // Construct the RemoteViews object
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
-            Intent adapterIntent = new Intent(context, GridWidgetService.class);
 
 
             views.setTextViewText(R.id.button_nutellaPie, context.getResources().getString(R.string.nutella_pie));
@@ -87,10 +91,6 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
             views.setOnClickPendingIntent(R.id.button_yellowCake, getPendingIntent(context, ACTION_YELLOW_CAKE));
 
 //            views.setEmptyView(R.id.widget_grid_view, R.id.empty_widget_layout);
-
-            GridWidgetService.setRecipeData(mRecipe);
-            Log.d(TAG, "RECIPEWIDGETPROVIDER: " + mRecipe.getNAME());
-            views.setRemoteAdapter(R.id.widget_grid_view, adapterIntent);
 
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }

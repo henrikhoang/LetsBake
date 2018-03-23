@@ -57,6 +57,7 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     @Override
     public int getCount() {
         if (RECIPE == null) return 0;
+        Log.d(TAG, "INGREDIENTS SIZE: " + (RECIPE.getINGREDIENTS().size()));
         return RECIPE.getINGREDIENTS().size();
     }
 
@@ -70,8 +71,8 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         String measure = RECIPE.getINGREDIENTS().get(position).getMeasure();
 
         RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.widget_support_grid_view);
-        views.setTextViewText(R.id.tv_widget_ingredient_name, ingredient);
-        views.setTextViewText(R.id.tv_widget_quantity, quantity + " " + measure);
+        views.setTextViewText(R.id.tv_widget_ingredient_name, "INGREDIENT");
+        views.setTextViewText(R.id.tv_widget_quantity, "3 TBSP");
         return views;
     }
 
@@ -82,16 +83,16 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public int getViewTypeCount() {
-        return 0;
+        return 1;
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
     public boolean hasStableIds() {
-        return false;
+        return true;
     }
 }

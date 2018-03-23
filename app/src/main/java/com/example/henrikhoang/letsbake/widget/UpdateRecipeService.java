@@ -67,7 +67,7 @@ public class UpdateRecipeService extends IntentService {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, RecipeWidgetProvider.class));
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_grid_view);
-        RecipeWidgetProvider.updateAppWidget(this, appWidgetManager, recipes.get(id), appWidgetIds);
+        RecipeWidgetProvider.updateAppWidget(this, recipes.get(id));
     }
 
 
