@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -59,11 +60,25 @@ public class RecipeDetailTest {
     }
 
     @Test
-    public void clickIngredientButton_OpenIngredientsDetail() {
+    public void OpenIngredientDetails() {
         onView(withId(R.id.rv_recipe_list_item)).perform(RecyclerViewActions.
-                actionOnItemAtPosition(0, CustomViewAction.clickChildViewWithId(R.id.tv_recipe_name)));
+                actionOnItemAtPosition(0, click()));
         onView(withText(TEST)).check(matches(isDisplayed()));
+        onView(withId(R.id.iv_cake_backdrop)).perform(click());
+        onView(withId(R.id.tv_ingredients)).perform(click());
+        onView(withText("Graham Cracker crumbs")).check(matches(isDisplayed()));
     }
+
+    @Test
+    public void OpenStepDetails() {
+        onView(withId(R.id.rv_recipe_list_item)).perform(RecyclerViewActions.
+                actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.iv_cake_backdrop)).perform(click());
+        onView(withId(R.id.rv_steps_list_item)).perform(RecyclerViewActions.
+                actionOnItemAtPosition(0, click()));
+        onView(withText("Recipe Introduction")).check(matches(isDisplayed()));
+    }
+
 
     @After
     public void unregisterIdlingResource() {

@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.example.henrikhoang.letsbake.IdlingResource.SimpleIdlingResource;
 import com.example.henrikhoang.letsbake.Recipe;
@@ -28,6 +29,10 @@ public class UpdateRecipeService extends IntentService {
     public static final String ACTION_SELECTED_INGREDIENT ="com.example.henrikhoang.letsbake.update_selected_recipe";
     public static final String TAG = UpdateRecipeService.class.getSimpleName();
 
+    private static final String ACTION_NUTELLA_PIE = "com.example.henrikhoang.letsbake.NUTELLA_PIE";
+    private static final String ACTION_BROWNIES = "com.example.henrikhoang.letsbake.BROWNIES";
+    private static final String ACTION_YELLOW_CAKE = "com.example.henrikhoang.letsbake.YELLOW_CAKE";
+    private static final String ACTION_CHEESE_CAKE = "com.example.henrikhoang.letsbake.CHEESE_CAKE";
 
     public UpdateRecipeService() {super(UpdateRecipeService.class.getName());}
 
@@ -35,14 +40,22 @@ public class UpdateRecipeService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
-            if (ACTION_UPDATE_INGREDIENTS.equals(action)) {
-                handleActionUpdateRecipe();
+            if (ACTION_NUTELLA_PIE.equals(action)) {
+                handleActionUpdateRecipe(0);
             }
-
+            if (ACTION_BROWNIES.equals(action)) {
+                handleActionUpdateRecipe(1);
+            }
+            if (ACTION_YELLOW_CAKE.equals(action)) {
+                handleActionUpdateRecipe(2);
+            }
+            if (ACTION_CHEESE_CAKE.equals(action)) {
+                handleActionUpdateRecipe(3);
+            }
         }
     }
 
-    private void handleActionUpdateRecipe() {
+    private void handleActionUpdateRecipe(int id) {
         ArrayList<Recipe> recipes = new ArrayList<>();
         try {
             URL recipeRequestURL = NetworkUtility.buildURL(mContext);
@@ -51,17 +64,17 @@ public class UpdateRecipeService extends IntentService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
+        Log.d(TAG, "WTFFFFF");
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, RecipeWidgetProvider.class));
-        RecipeWidgetProvider.updateRecipeIngredients(this, appWidgetManager, recipes, appWidgetIds);
+        RecipeWidgetProvider.updateAppWidget(this, appWidgetManager, recipes.get(id), appWidgetIds);
     }
 
 
 
-    public static void startActionUpdateRecipe(Context context) {
+    public static void startActionUpdateRecipe(Context context, String action) {
         Intent intent = new Intent(context, UpdateRecipeService.class);
-        intent.setAction(ACTION_UPDATE_INGREDIENTS);
+        intent.setAction(action);
         context.startService(intent);
     }
 

@@ -28,7 +28,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
             android:text="@string/ingredients_upper_case"
             android:textAlignment="center"
             android:padding="@dimen/normal_padding"/>
