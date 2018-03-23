@@ -56,13 +56,14 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public int getCount() {
-        return 0;
+        if (RECIPE == null) return 0;
+        return RECIPE.getINGREDIENTS().size();
     }
 
     @Override
     public RemoteViews getViewAt(int position) {
 
-        if (RECIPE == null) return null;
+//        if (RECIPE == null) return null;
         Log.d(TAG, "Widget service log: " + RECIPE.getNAME());
         String ingredient = RECIPE.getINGREDIENTS().get(position).getIngredientName();
         int quantity = RECIPE.getINGREDIENTS().get(position).getQuantity();

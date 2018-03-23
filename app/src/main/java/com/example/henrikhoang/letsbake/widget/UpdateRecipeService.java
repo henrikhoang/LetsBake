@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 
 import com.example.henrikhoang.letsbake.IdlingResource.SimpleIdlingResource;
+import com.example.henrikhoang.letsbake.R;
 import com.example.henrikhoang.letsbake.Recipe;
 import com.example.henrikhoang.letsbake.utility.NetworkUtility;
 import com.example.henrikhoang.letsbake.utility.OpenRecipeJsonUtils;
@@ -65,6 +66,7 @@ public class UpdateRecipeService extends IntentService {
             }
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, RecipeWidgetProvider.class));
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_grid_view);
         RecipeWidgetProvider.updateAppWidget(this, appWidgetManager, recipes.get(id), appWidgetIds);
     }
 
