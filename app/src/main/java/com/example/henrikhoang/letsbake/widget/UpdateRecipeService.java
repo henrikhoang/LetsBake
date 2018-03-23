@@ -6,7 +6,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.example.henrikhoang.letsbake.IdlingResource.SimpleIdlingResource;
 import com.example.henrikhoang.letsbake.Recipe;
@@ -64,7 +63,6 @@ public class UpdateRecipeService extends IntentService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        Log.d(TAG, "WTFFFFF");
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, RecipeWidgetProvider.class));
         RecipeWidgetProvider.updateAppWidget(this, appWidgetManager, recipes.get(id), appWidgetIds);
