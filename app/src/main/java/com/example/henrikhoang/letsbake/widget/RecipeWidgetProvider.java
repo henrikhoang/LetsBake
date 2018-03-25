@@ -75,10 +75,8 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             // Construct the RemoteViews object
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
-
-
+            
             views.setTextViewText(R.id.button_nutellaPie, context.getResources().getString(R.string.nutella_pie));
-
             views.setOnClickPendingIntent(R.id.button_nutellaPie, getPendingIntent(context, ACTION_NUTELLA_PIE));
 
             views.setTextViewText(R.id.button_brownies, context.getResources().getString(R.string.brownies));
@@ -89,6 +87,8 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
 
             views.setTextViewText(R.id.button_yellowCake, context.getResources().getString(R.string.yellow_cake));
             views.setOnClickPendingIntent(R.id.button_yellowCake, getPendingIntent(context, ACTION_YELLOW_CAKE));
+
+            views.setEmptyView(R.id.non_empty_widget_layout, R.id.empty_widget_layout);
 
 //            views.setEmptyView(R.id.widget_grid_view, R.id.empty_widget_layout);
 

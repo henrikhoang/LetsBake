@@ -64,15 +64,18 @@ class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     @Override
     public RemoteViews getViewAt(int position) {
 
-//        if (RECIPE == null) return null;
-        Log.d(TAG, "Widget service log: " + RECIPE.getNAME());
-        String ingredient = RECIPE.getINGREDIENTS().get(position).getIngredientName();
-        int quantity = RECIPE.getINGREDIENTS().get(position).getQuantity();
-        String measure = RECIPE.getINGREDIENTS().get(position).getMeasure();
-
+        if (RECIPE == null) return null;
         RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.widget_support_grid_view);
-        views.setTextViewText(R.id.tv_widget_ingredient_name, "INGREDIENT");
-        views.setTextViewText(R.id.tv_widget_quantity, "3 TBSP");
+        try {
+            String ingredient = RECIPE.getINGREDIENTS().get(position).getIngredientName();
+            int quantity = RECIPE.getINGREDIENTS().get(position).getQuantity();
+            String measure = RECIPE.getINGREDIENTS().get(position).getMeasure();
+
+            views.setTextViewText(R.id.tv_widget_ingredient_name, ingredient);
+            views.setTextViewText(R.id.tv_widget_quantity, quantity + " " + measure);
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
         return views;
     }
 
