@@ -11,17 +11,15 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.henrikhoang.letsbake.IngredientActivity;
-import com.example.henrikhoang.letsbake.RecipeDetailsActivity;
 import com.example.henrikhoang.letsbake.R;
 import com.example.henrikhoang.letsbake.Recipe;
+import com.example.henrikhoang.letsbake.RecipeDetailsActivity;
 import com.example.henrikhoang.letsbake.StepActivity;
 import com.example.henrikhoang.letsbake.adapter.StepAdapter;
 
@@ -56,10 +54,28 @@ implements StepAdapter.StepAdapterOnClickHandler {
     @BindView(R.id.tv_ingredients)
     TextView mIngredientsTextView;
 
+    OnDataItemClickListener mCallback;
     private StepAdapter mStepAdapter;
     private static final String TAG = RecipeDetailsActivity.class.getSimpleName();
 
     public RecipeDetailFragment() {}
+
+    public interface OnDataItemClickListener {
+        void onIngredientsClicked();
+        void onStepsClicked();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mCallback = (OnDataItemClickListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() +
+                    " must implement OnImageClickListener");
+        }
+
+    }
 
     @Nullable
     @Override
@@ -84,11 +100,15 @@ implements StepAdapter.StepAdapterOnClickHandler {
             @Override
             public void onClick(View v) {
                 //Link to Ingredient
-                Context context = getContext();
-                Class destinationClass = IngredientActivity.class;
-                Intent intent = new Intent(context, destinationClass);
-                intent.putExtra("recipe", Parcels.wrap(mRecipe));
-                startActivity(intent);
+                if (RecipeDetailsActivity.isTwoPane()) {
+                    mCallback.onIngredientsClicked();
+                } else {
+                    Context context = getContext();
+                    Class destinationClass = IngredientActivity.class;
+                    Intent intent = new Intent(context, destinationClass);
+                    intent.putExtra("recipe", Parcels.wrap(mRecipe));
+                    startActivity(intent);
+                }
             }
         });
         return rootView;
@@ -98,16 +118,17 @@ implements StepAdapter.StepAdapterOnClickHandler {
     @Override
     public void onCLick(Bundle bundle) {
         int index = bundle.getInt("step index");
-
-        Log.d(TAG, "STEP INDEX ACQUIRED :" + index);
-
-        Toast.makeText(getContext(), "Step " + index + " was clicked", Toast.LENGTH_SHORT).show();
-        Context context = getContext();
-        Class destinationClass = StepActivity.class;
-        Intent intent = new Intent(context, destinationClass);
-        intent.putExtras(bundle);
-
-        startActivity(intent);
+        if (RecipeDetailsActivity.isTwoPane()) {
+            RecipeDetailsActivity.setData(index);
+            mCallback.onStepsClicked();
+        }
+        if (!RecipeDetailsActivity.isTwoPane()) {
+            Context context = getContext();
+            Class destinationClass = StepActivity.class;
+            Intent intent = new Intent(context, destinationClass);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
     }
 
     @Override

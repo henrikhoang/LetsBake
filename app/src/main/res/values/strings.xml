@@ -16,4 +16,6 @@
     <string name="last_step_notification">You are already at the last step!</string>
     <string name="instruction">Tap Any Where To Start</string>
     <string name="loading_data">Loading Recipes</string>
+    <string name="widget_loading_data">Loading Data...</string>
+    <string name="widget_error_loading">Unable to connect to Internet</string>
 </resources>

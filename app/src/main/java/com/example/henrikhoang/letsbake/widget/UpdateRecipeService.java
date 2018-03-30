@@ -57,17 +57,21 @@ public class UpdateRecipeService extends IntentService {
 
     private void handleActionUpdateRecipe(int id) {
         ArrayList<Recipe> recipes = new ArrayList<>();
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, RecipeWidgetProvider.class));
+        RecipeWidgetProvider.loadingData(this);
+
         try {
             URL recipeRequestURL = NetworkUtility.buildURL(mContext);
             String jsonRecipeResponse = NetworkUtility.getResponseFromHttpUrl(recipeRequestURL);
             recipes = OpenRecipeJsonUtils.getRecipeFromJson(mContext, jsonRecipeResponse, new SimpleIdlingResource());
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_grid_view);
+            RecipeWidgetProvider.updateAppWidget(this, recipes.get(id));
+
             } catch (Exception e) {
                 e.printStackTrace();
+                RecipeWidgetProvider.errorLoadingData(this);
             }
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, RecipeWidgetProvider.class));
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_grid_view);
-        RecipeWidgetProvider.updateAppWidget(this, recipes.get(id));
     }
 
 

@@ -28,12 +28,16 @@
     <dimen name="single_card_view_width">300dp</dimen>
     <dimen name="exoplayer_height">220dp</dimen>
     <dimen name="widget_ingredient">5dp</dimen>
-    <dimen name="widget_margin">8dp</dimen>
+    <dimen name="widget_margin">15dp</dimen>
     <dimen name="exoplayer_padding">8dp</dimen>
     <dimen name="navigation_button_padding">8dp</dimen>
     <dimen name="navigation_button_width">100dp</dimen>
 
     <dimen name="ingredients_font_size">12sp</dimen>
+
+    <!--Widget attribute-->
+    <dimen name="widget_min_height">150dp</dimen>
+    <dimen name="widget_min_width">320dp</dimen>
 </resources>
     <!--
 Refer to App Widget Documentation for margin information

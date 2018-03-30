@@ -12,7 +12,7 @@
         android:id="@+id/cake_name_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorAccent"
         android:elevation="4dp"
         android:theme="@style/AppTheme" />
 

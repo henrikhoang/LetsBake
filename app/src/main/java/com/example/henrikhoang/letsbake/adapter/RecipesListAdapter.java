@@ -44,11 +44,13 @@ public class RecipesListAdapter extends
 
         final ImageView mRecipeThumbnailImageView;
         final TextView mRecipeNameTextView;
+        final TextView mServingTextView;
 
         RecipesListAdapterViewHolder(View view) {
             super(view);
             mRecipeNameTextView = (TextView) view.findViewById(R.id.tv_recipe_name);
             mRecipeThumbnailImageView = (ImageView) view.findViewById(R.id.iv_recipe_thumbnail);
+            mServingTextView = (TextView) view.findViewById(R.id.tv_servings);
             view.setOnClickListener(this);
         }
 
@@ -80,6 +82,7 @@ public class RecipesListAdapter extends
         Log.d(TAG, "img res: " + imgRes);
         holder.mRecipeNameTextView.setText(selectedRecipeName);
         Glide.with(mContext).load(imgRes).into(holder.mRecipeThumbnailImageView);
+        holder.mServingTextView.setText(String.valueOf(recipe.getSERVINGS()));
     }
 
     @Override

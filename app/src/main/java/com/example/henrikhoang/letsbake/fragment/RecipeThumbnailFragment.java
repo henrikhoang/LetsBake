@@ -77,7 +77,7 @@ public class RecipeThumbnailFragment extends Fragment {
         try {
             Picasso.get().load(thumbnailId).into(mRecipeThumbnail);
             mRecipeNameTextView.setText(recipe.getNAME());
-//
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(TAG, "Cannot load image");

@@ -78,6 +78,7 @@ LoaderManager.LoaderCallbacks<List<Recipe>> {
     @BindView(R.id.backdrop)
     ImageView mBackdrop;
 
+    private static int mGridSpanCount;
     private List<Recipe> recipes;
 
     public MenuRecipeFragment() {
@@ -96,6 +97,9 @@ LoaderManager.LoaderCallbacks<List<Recipe>> {
         MainActivity.mIdlingResource = idlingResource;
     }
 
+    public static void setGridSpanCount(int count) {
+        mGridSpanCount = count;
+    }
 
     @Nullable
     @Override
@@ -105,7 +109,7 @@ LoaderManager.LoaderCallbacks<List<Recipe>> {
         unbinder = ButterKnife.bind(this, rootView);
 
         ((AppCompatActivity)getActivity()).setSupportActionBar(mAppToolbar);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 2);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), mGridSpanCount);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());

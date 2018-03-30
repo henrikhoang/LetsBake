@@ -3,8 +3,10 @@ package com.example.henrikhoang.letsbake.fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,9 +15,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.henrikhoang.letsbake.R;
+import com.example.henrikhoang.letsbake.RecipeDetailsActivity;
 import com.example.henrikhoang.letsbake.Step;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -27,6 +31,8 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,6 +70,9 @@ public class StepFragment extends Fragment {
     @BindView(R.id.step_toolbar)
     Toolbar mToolbar;
 
+    @BindView(R.id.iv_no_video)
+    ImageView mNoVideoImageView;
+
     OnButtonClickListener mCallback;
     private Step mStep = null;
 
@@ -83,14 +92,17 @@ public class StepFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        try {
-            mCallback = (OnButtonClickListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() +
-            " must implement OnButtonClickListener");
+        if (!RecipeDetailsActivity.isTwoPane()) {
+            try {
+                mCallback = (OnButtonClickListener) context;
+            } catch (ClassCastException e) {
+                throw new ClassCastException(context.toString() +
+                        " must implement OnButtonClickListener");
+            }
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -105,10 +117,16 @@ public class StepFragment extends Fragment {
             String description = mStep.getDescription();
             mInstruction.setText(description);
             Log.d(TAG, "VIDEO URL CHECK: " + mStep.getVideoURL());
-            if (mStep.getVideoURL() == null || mStep.getVideoURL() == "") {
+
+            boolean isVideoUrlAvai = Objects.equals(mVideoURL, "");
+            Log.d(TAG, "VIDEO URL CHECK: " + isVideoUrlAvai);
+//            if (mVideoURL.equals("")  && mStep.getThumbnailURL().equals("")) {
+            if (isVideoUrlAvai) {
                 mPlayerView.setVisibility(View.GONE);
+                mNoVideoImageView.setVisibility(View.VISIBLE);
             } else {
                 mPlayerView.setVisibility(View.VISIBLE);
+                mNoVideoImageView.setVisibility(View.GONE);
             }
 
             mPreviousButton.setOnClickListener(new ImageButton.OnClickListener() {
@@ -125,6 +143,11 @@ public class StepFragment extends Fragment {
                     mCallback.onNextButtonClicked();
                 }
             });
+
+            if (RecipeDetailsActivity.isTwoPane()) {
+                mNextButton.setVisibility(View.GONE);
+                mPreviousButton.setVisibility(View.GONE);
+            }
         }
             return rootView;
 
@@ -137,7 +160,7 @@ public class StepFragment extends Fragment {
     public void onStart() {
         super.onStart();
         if (Util.SDK_INT > 23 && (mVideoURL != null || !mVideoURL.equals(""))) {
-            initializePlayer();
+           initializePlayer();
         }
     }
 
@@ -173,18 +196,23 @@ public class StepFragment extends Fragment {
         super.onViewStateRestored(savedInstanceState);
     }
 
+
     public void initializePlayer() {
-        if (player == null ) {
+        if (player == null) {
             player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(getContext()),
                     new DefaultTrackSelector(), new DefaultLoadControl());
             mPlayerView.setPlayer(player);
             player.setPlayWhenReady(playWhenReady);
             player.seekTo(currentWindow, playbackPosition);
         }
-        if (mStep.getVideoURL() != null || mStep.getVideoURL() != "") {
+
+        if (mStep.getVideoURL() != null) {
+            mPlayerView.setVisibility(View.VISIBLE);
+            mNoVideoImageView.setVisibility(View.INVISIBLE);
             MediaSource mediaSource = buildMediaSource(Uri.parse(mStep.getVideoURL()));
             player.prepare(mediaSource, true, false);
         }
+
     }
 
     public void releasePlayer() {
@@ -217,19 +245,10 @@ public class StepFragment extends Fragment {
         unbinder.unbind();
     }
 
-//    public void setPreviousButtonOff() {
-//        mPreviousButton.setVisibility(View.GONE);
-//    }
-//
-//    public void setPreviousButtonOn() {
-//        mPreviousButton.setVisibility(View.VISIBLE);
-//    }
-//
-//    public void setNextButtonOff() {
-//        mNextButton.setVisibility(View.GONE);
-//    }
-//
-//    public void setNextButtonOn() {
-//        mNextButton.setVisibility(View.VISIBLE);
-//    }
+
+    public void noVideoURl() {
+        mPlayerView.setVisibility(View.INVISIBLE);
+        mNoVideoImageView.setVisibility(View.VISIBLE);
+    }
+
 }

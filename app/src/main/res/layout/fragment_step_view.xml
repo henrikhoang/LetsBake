@@ -32,14 +32,15 @@
 
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
         android:id="@+id/playerView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/exoplayer_height"
         android:layout_marginLeft="@dimen/exoplayer_padding"
         android:layout_marginRight="@dimen/exoplayer_padding"
         android:layout_marginTop="@dimen/exoplayer_padding"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/step_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/step_toolbar"
+        />
 
 
     <ImageButton
@@ -67,6 +68,21 @@
         app:srcCompat="@android:drawable/ic_media_next"
         android:background="@color/colorAccent"
         android:layout_marginRight="@dimen/navigation_button_padding" />
+
+    <ImageView
+        android:id="@+id/iv_no_video"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/exoplayer_height"
+        android:background="@android:color/background_dark"
+        android:layout_margin="@dimen/normal_padding"
+        android:layout_marginTop="@dimen/normal_padding"
+        android:padding="@dimen/normal_padding"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/step_toolbar"
+        app:layout_constraintBottom_toTopOf="@+id/tv_step_instruction"
+        app:srcCompat="@android:drawable/stat_notify_error"
+        android:visibility="gone"/>
 
 
 </android.support.constraint.ConstraintLayout>

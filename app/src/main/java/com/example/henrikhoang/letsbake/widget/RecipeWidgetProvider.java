@@ -7,6 +7,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import com.example.henrikhoang.letsbake.R;
@@ -24,15 +25,18 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
     public static Recipe mRecipe;
 
     public static void updateAppWidget(Context context, Recipe recipe) {
-            mRecipe = recipe;
-             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        mRecipe = recipe;
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         ComponentName thisAppWidget = new ComponentName(context.getPackageName(), RecipeWidgetProvider.class.getName());
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
 
         Intent adapterIntent = new Intent(context, GridWidgetService.class);
+
         if (mRecipe != null) {
+            views.setViewVisibility(R.id.tv_widget_loading, View.GONE);
+            views.setViewVisibility(R.id.widget_progress_bar, View.GONE);
             GridWidgetService.setRecipeData(recipe);
             Log.d(TAG, mRecipe.getNAME());
             views.setRemoteAdapter(R.id.widget_grid_view, adapterIntent);
@@ -42,6 +46,30 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
         appWidgetManager.updateAppWidget(appWidgetIds, views);
     }
 
+    public static void loadingData(Context context) {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        ComponentName thisAppWidget = new ComponentName(context.getPackageName(), RecipeWidgetProvider.class.getName());
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
+
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
+        views.setViewVisibility(R.id.tv_widget_loading, View.VISIBLE);
+        views.setTextViewText(R.id.tv_widget_loading, context.getResources().getString(R.string.widget_loading_data));
+        views.setViewVisibility(R.id.widget_progress_bar, View.VISIBLE);
+        appWidgetManager.updateAppWidget(appWidgetIds, views);
+    }
+
+    public static void errorLoadingData(Context context) {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        ComponentName thisAppWidget = new ComponentName(context.getPackageName(), RecipeWidgetProvider.class.getName());
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
+
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
+        views.setViewVisibility(R.id.widget_progress_bar, View.GONE);
+        views.setViewVisibility(R.id.tv_widget_loading, View.VISIBLE);
+        views.setTextViewText(R.id.tv_widget_loading, context.getResources().getString(R.string.widget_error_loading));
+        appWidgetManager.updateAppWidget(appWidgetIds, views);
+
+    }
     protected static PendingIntent getPendingIntent(Context context, String action) {
         Intent intent = new Intent(context, RecipeWidgetProvider.class);
         intent.setAction(action);
@@ -53,10 +81,8 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
         super.onReceive(context, intent);
         String action = intent.getAction();
 
-
         if (ACTION_NUTELLA_PIE.equals(intent.getAction())) {
             UpdateRecipeService.startActionUpdateRecipe(context, action);
-            Log.d(TAG, "Action is Clicked");
         }
         if (ACTION_BROWNIES.equals(intent.getAction())) {
             UpdateRecipeService.startActionUpdateRecipe(context, action);
@@ -75,7 +101,7 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             // Construct the RemoteViews object
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
-            
+
             views.setTextViewText(R.id.button_nutellaPie, context.getResources().getString(R.string.nutella_pie));
             views.setOnClickPendingIntent(R.id.button_nutellaPie, getPendingIntent(context, ACTION_NUTELLA_PIE));
 
@@ -87,8 +113,6 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
 
             views.setTextViewText(R.id.button_yellowCake, context.getResources().getString(R.string.yellow_cake));
             views.setOnClickPendingIntent(R.id.button_yellowCake, getPendingIntent(context, ACTION_YELLOW_CAKE));
-
-            views.setEmptyView(R.id.non_empty_widget_layout, R.id.empty_widget_layout);
 
 //            views.setEmptyView(R.id.widget_grid_view, R.id.empty_widget_layout);
 

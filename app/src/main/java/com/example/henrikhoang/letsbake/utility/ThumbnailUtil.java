@@ -21,7 +21,7 @@ public class ThumbnailUtil {
         if (recipeName.equals(context.getResources().getString(R.string.nutella_pie))) {
             return R.drawable.nutella_pie;
         }
-        else{
+        else {
             return R.drawable.yellow_cake;
         }
 
