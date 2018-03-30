@@ -20,10 +20,10 @@
             <Button
                 android:id="@+id/button_nutellaPie"
                 android:layout_width="0dp"
-                android:layout_height="55dp"
+                android:layout_height="@dimen/button_height"
                 android:layout_weight="1"
                 android:fontFamily="casual"
-                android:textSize="10sp"
+                android:textSize="@dimen/small_text_size"
                 tools:text="Nutella Pie"
                 android:textStyle="bold"/>
 
@@ -31,9 +31,9 @@
             <Button android:id="@+id/button_brownies"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="55dp"
+                android:layout_height="@dimen/button_height"
                 tools:text="Brownies"
-                android:textSize="10sp"
+                android:textSize="@dimen/small_text_size"
                 android:textStyle="bold"
                 android:fontFamily="casual"
                 />
@@ -41,9 +41,9 @@
             <Button android:id="@+id/button_yellowCake"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="55dp"
+                android:layout_height="@dimen/button_height"
                 tools:text="Yellow Cake"
-                android:textSize="10sp"
+                android:textSize="@dimen/small_text_size"
                 android:textStyle="bold"
                 android:fontFamily="casual"
                 android:layout_gravity="center"/>
@@ -51,10 +51,10 @@
             <Button
                 android:id="@+id/button_cheeseCake"
                 android:layout_width="0dp"
-                android:layout_height="55dp"
+                android:layout_height="@dimen/button_height"
                 android:layout_weight="1"
                 android:fontFamily="casual"
-                android:textSize="10sp"
+                android:textSize="@dimen/small_text_size"
                 android:textStyle="bold"
                 tools:text="Cheese Cake" />
 

@@ -18,6 +18,7 @@
 
     <dimen name="card_corner_radius">30dp</dimen>
 
+    <dimen name="small_text_size">10sp</dimen>
     <dimen name="medium_text_size">20sp</dimen>
     <dimen name="large_text_size">45sp</dimen>
 
@@ -38,6 +39,15 @@
     <!--Widget attribute-->
     <dimen name="widget_min_height">150dp</dimen>
     <dimen name="widget_min_width">320dp</dimen>
+    <dimen name="button_height">55dp</dimen>
+
+    <!--recipes_card_view.xml-->
+    <dimen name="recipe_card_width">190dp</dimen>
+    <dimen name="recipe_card_height">200dp</dimen>
+    <dimen name="recipe_name_tv">40dp</dimen>
+    <dimen name="divider_card_view">2dp</dimen>
+    <dimen name="serving_width_tv">60dp</dimen>
+    <dimen name="serving_height_tv">40dp</dimen>
 </resources>
     <!--
 Refer to App Widget Documentation for margin information
