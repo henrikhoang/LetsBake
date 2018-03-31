@@ -74,9 +74,9 @@ public class StepFragment extends Fragment {
     ImageView mNoVideoImageView;
 
     OnButtonClickListener mCallback;
-    private Step mStep = null;
+    private static Step mStep;
 
-    private String mVideoURL;
+    private static String mVideoURL;
 
 
 
@@ -92,6 +92,7 @@ public class StepFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
         if (!RecipeDetailsActivity.isTwoPane()) {
             try {
                 mCallback = (OnButtonClickListener) context;
@@ -102,21 +103,39 @@ public class StepFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        playbackPosition = player.getCurrentPosition();
+        outState.putLong("current play position", playbackPosition);
+        Log.d(TAG, "SavedInstanceState " + playbackPosition);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            playbackPosition = savedInstanceState.getLong("current play position");
+            Log.d(TAG, "SavedInstanceStateRestored: " + playbackPosition);
+        }
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_step_view, container, false);
         unbinder = ButterKnife.bind(this, rootView);
-
-        if (mStep != null) {
-            mVideoURL = mStep.getVideoURL();
+        Log.d(TAG, "onCreate");
+        Step step = mStep;
+        if (step != null) {
+            mVideoURL = step.getVideoURL();
             ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
-            mToolbar.setTitle(mStep.getShortDescription());
+            mToolbar.setTitle(step.getShortDescription());
 
-            String description = mStep.getDescription();
+            String description = step.getDescription();
             mInstruction.setText(description);
-            Log.d(TAG, "VIDEO URL CHECK: " + mStep.getVideoURL());
+            Log.d(TAG, "VIDEO URL CHECK: " + step.getVideoURL());
 
             boolean isVideoUrlAvai = Objects.equals(mVideoURL, "");
             Log.d(TAG, "VIDEO URL CHECK: " + isVideoUrlAvai);
@@ -154,12 +173,14 @@ public class StepFragment extends Fragment {
     }
 
     public void updateDataStep(Step step) {
-        this.mStep = step;
+        mStep = step;
+        Log.d(TAG, "STEP UPDATED!");
     }
     @Override
     public void onStart() {
         super.onStart();
-        if (Util.SDK_INT > 23 && (mVideoURL != null || !mVideoURL.equals(""))) {
+        if (Util.SDK_INT > 23 ) {
+            Log.d(TAG, "onStart");
            initializePlayer();
         }
     }
@@ -169,7 +190,7 @@ public class StepFragment extends Fragment {
         super.onResume();
         hideSystemUi();
         Log.d(TAG, "onResume");
-        if ((Util.SDK_INT <= 23 || player == null) && (mVideoURL != null || !mVideoURL.equals(""))) {
+        if (Util.SDK_INT <= 23 || player == null || mStep != null) {
             initializePlayer();
         }
     }
@@ -179,6 +200,7 @@ public class StepFragment extends Fragment {
         super.onPause();
         Log.d(TAG, "onPause");
         if (Util.SDK_INT <= 23) {
+            Log.d(TAG, "Playback position: " + player.getCurrentPosition());
             releasePlayer();
         }
     }
@@ -191,11 +213,6 @@ public class StepFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-    }
-
 
     public void initializePlayer() {
         if (player == null) {
@@ -203,16 +220,10 @@ public class StepFragment extends Fragment {
                     new DefaultTrackSelector(), new DefaultLoadControl());
             mPlayerView.setPlayer(player);
             player.setPlayWhenReady(playWhenReady);
-            player.seekTo(currentWindow, playbackPosition);
+            player.seekTo(currentWindow, 3981);
         }
-
-        if (mStep.getVideoURL() != null) {
-            mPlayerView.setVisibility(View.VISIBLE);
-            mNoVideoImageView.setVisibility(View.INVISIBLE);
-            MediaSource mediaSource = buildMediaSource(Uri.parse(mStep.getVideoURL()));
+            MediaSource mediaSource = buildMediaSource(Uri.parse(mVideoURL));
             player.prepare(mediaSource, true, false);
-        }
-
     }
 
     public void releasePlayer() {
@@ -244,6 +255,7 @@ public class StepFragment extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
 
 
     public void noVideoURl() {

@@ -39,14 +39,12 @@ StepFragment.OnButtonClickListener {
         mSteps = Parcels.unwrap(getIntent().getParcelableExtra("list of steps"));
         mStep = mSteps.get(localStepIndex);
 
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
+        StepFragment stepFragment = new StepFragment();
+        stepFragment.updateDataStep(mStep);
 
-            if (savedInstanceState == null) {
-
-                FragmentManager fragmentManager = getSupportFragmentManager();
-
-                StepFragment stepFragment = new StepFragment();
-                stepFragment.updateDataStep(mStep);
+        if (savedInstanceState == null) {
                 fragmentManager.beginTransaction()
                         .add(R.id.step_fragment, stepFragment)
                         .commit();
