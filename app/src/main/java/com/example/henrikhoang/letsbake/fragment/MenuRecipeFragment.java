@@ -116,6 +116,8 @@ LoaderManager.LoaderCallbacks<List<Recipe>> {
 
         mRecipeAdapter = new RecipesListAdapter(this, this.getContext());
         mRecyclerView.setAdapter(mRecipeAdapter);
+
+
         try {
             Glide.with(this).load(R.drawable.cover).into(mBackdrop);
         } catch (Exception e) {

@@ -76,13 +76,18 @@ public class RecipesListAdapter extends
     public void onBindViewHolder(RecipesListAdapterViewHolder holder, int position) {
         final Recipe recipe = mRecipes.get(position);
         String selectedRecipeName = recipe.getNAME();
-        Log.d(TAG, "NAME OF RECIPE: " + selectedRecipeName);
-
         int imgRes = ThumbnailUtil.getImageResByName(mContext, selectedRecipeName);
+
         Log.d(TAG, "img res: " + imgRes);
         holder.mRecipeNameTextView.setText(selectedRecipeName);
-        Glide.with(mContext).load(imgRes).into(holder.mRecipeThumbnailImageView);
+
+        String officialImg = mRecipes.get(position).getIMAGEURL();
         holder.mServingTextView.setText(String.valueOf(recipe.getSERVINGS()));
+        if (!officialImg.equals(""))  {
+            Glide.with(mContext).load(officialImg).into(holder.mRecipeThumbnailImageView);
+        } else {
+        Glide.with(mContext).load(imgRes).into(holder.mRecipeThumbnailImageView);}
+
     }
 
     @Override

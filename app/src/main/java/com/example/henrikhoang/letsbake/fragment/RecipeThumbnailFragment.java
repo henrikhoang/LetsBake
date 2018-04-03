@@ -74,13 +74,19 @@ public class RecipeThumbnailFragment extends Fragment {
         int thumbnailId = ThumbnailUtil.getImageResByName(getContext(), recipe.getNAME());
         Log.d(TAG, "Image Id: " + thumbnailId);
 
-        try {
-            Picasso.get().load(thumbnailId).into(mRecipeThumbnail);
-            mRecipeNameTextView.setText(recipe.getNAME());
+        String officialImg = recipe.getIMAGEURL();
+        if (!officialImg.equals("")) {
+            Picasso.get().load(officialImg).into(mRecipeThumbnail);
+        }
+        else {
+            try {
+                Picasso.get().load(thumbnailId).into(mRecipeThumbnail);
+                mRecipeNameTextView.setText(recipe.getNAME());
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(TAG, "Cannot load image");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(TAG, "Cannot load image");
+            }
         }
 
         mRecipeThumbnail.setOnClickListener(new ImageView.OnClickListener() {

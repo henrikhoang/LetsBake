@@ -77,7 +77,9 @@ public class StepFragment extends Fragment {
     private static Step mStep;
 
     private static String mVideoURL;
+    private static String mThumbnailURL;
 
+    private boolean playThumbnailUrl;
 
 
 
@@ -129,7 +131,9 @@ public class StepFragment extends Fragment {
         Log.d(TAG, "onCreate");
         Step step = mStep;
         if (step != null) {
+            playThumbnailUrl = false;
             mVideoURL = step.getVideoURL();
+            mThumbnailURL = step.getThumbnailURL();
             ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
             mToolbar.setTitle(step.getShortDescription());
 
@@ -137,15 +141,20 @@ public class StepFragment extends Fragment {
             mInstruction.setText(description);
             Log.d(TAG, "VIDEO URL CHECK: " + step.getVideoURL());
 
-            boolean isVideoUrlAvai = Objects.equals(mVideoURL, "");
-            Log.d(TAG, "VIDEO URL CHECK: " + isVideoUrlAvai);
-//            if (mVideoURL.equals("")  && mStep.getThumbnailURL().equals("")) {
-            if (isVideoUrlAvai) {
-                mPlayerView.setVisibility(View.GONE);
-                mNoVideoImageView.setVisibility(View.VISIBLE);
+            boolean isVideoUrlUnavail = Objects.equals(mVideoURL, "");
+            boolean isThumbnailUrlUnavail = Objects.equals(mThumbnailURL, "");
+
+            Log.d(TAG, "VIDEO URL CHECK: " + isVideoUrlUnavail);
+
+            if (isVideoUrlUnavail) {
+               if (isThumbnailUrlUnavail) {
+                   noVideoURl();
+               } else if (!isThumbnailUrlUnavail) {
+                   playThumbnailUrl = true;
+                   hasVideoUrl();
+               }
             } else {
-                mPlayerView.setVisibility(View.VISIBLE);
-                mNoVideoImageView.setVisibility(View.GONE);
+               hasVideoUrl();
             }
 
             mPreviousButton.setOnClickListener(new ImageButton.OnClickListener() {
@@ -190,7 +199,7 @@ public class StepFragment extends Fragment {
         super.onResume();
         hideSystemUi();
         Log.d(TAG, "onResume");
-        if (Util.SDK_INT <= 23 || player == null || mStep != null) {
+        if (Util.SDK_INT <= 23 || player == null) {
             initializePlayer();
         }
     }
@@ -220,10 +229,18 @@ public class StepFragment extends Fragment {
                     new DefaultTrackSelector(), new DefaultLoadControl());
             mPlayerView.setPlayer(player);
             player.setPlayWhenReady(playWhenReady);
-            player.seekTo(currentWindow, 3981);
+            player.seekTo(currentWindow, playbackPosition);
         }
+        if (!playThumbnailUrl) {
             MediaSource mediaSource = buildMediaSource(Uri.parse(mVideoURL));
-            player.prepare(mediaSource, true, false);
+            player.prepare(mediaSource, false, false);
+         }
+
+        if (playThumbnailUrl) {
+            MediaSource mediaSource = buildMediaSource(Uri.parse(mThumbnailURL));
+            player.prepare(mediaSource, false, false);
+        }
+
     }
 
     public void releasePlayer() {
@@ -237,7 +254,7 @@ public class StepFragment extends Fragment {
     }
 
     private MediaSource buildMediaSource(Uri uri) {
-        return new ExtractorMediaSource.Factory(new DefaultHttpDataSourceFactory("testing"))
+        return new ExtractorMediaSource.Factory(new DefaultHttpDataSourceFactory("LetsBake"))
                 .createMediaSource(uri);
     }
 
@@ -261,6 +278,11 @@ public class StepFragment extends Fragment {
     public void noVideoURl() {
         mPlayerView.setVisibility(View.INVISIBLE);
         mNoVideoImageView.setVisibility(View.VISIBLE);
+    }
+
+    public void hasVideoUrl() {
+        mPlayerView.setVisibility(View.VISIBLE);
+        mNoVideoImageView.setVisibility(View.INVISIBLE);
     }
 
 }

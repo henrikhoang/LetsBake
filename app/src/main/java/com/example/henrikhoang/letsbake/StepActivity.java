@@ -22,6 +22,7 @@ StepFragment.OnButtonClickListener {
     private static final String TAG = StepActivity.class.getSimpleName();
     private int localStepIndex;
     private boolean initialClick = true;
+    private static String LOCAL_STEP_INDEX = "local step index";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,9 @@ StepFragment.OnButtonClickListener {
         Log.d(TAG, "STEP ACTIVITY step index" + stepIndex);
 
         mSteps = Parcels.unwrap(getIntent().getParcelableExtra("list of steps"));
+        if (savedInstanceState != null) {
+            localStepIndex = savedInstanceState.getInt(LOCAL_STEP_INDEX);
+        }
         mStep = mSteps.get(localStepIndex);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -51,6 +55,16 @@ StepFragment.OnButtonClickListener {
             }
         }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(LOCAL_STEP_INDEX, localStepIndex);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        localStepIndex = savedInstanceState.getInt(LOCAL_STEP_INDEX);
+    }
 
     @Override
     public void onPreviousButtonClicked() {
