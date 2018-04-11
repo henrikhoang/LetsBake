@@ -48,6 +48,7 @@
     <dimen name="divider_card_view">2dp</dimen>
     <dimen name="serving_width_tv">60dp</dimen>
     <dimen name="serving_height_tv">40dp</dimen>
+
 </resources>
     <!--
 Refer to App Widget Documentation for margin information

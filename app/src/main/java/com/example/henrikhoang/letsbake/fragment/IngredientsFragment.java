@@ -63,7 +63,7 @@ public class IngredientsFragment extends Fragment {
             mIngredientRecyclerView.setLayoutManager(layoutManager);
             mIngredientRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         return rootView;
     }
 

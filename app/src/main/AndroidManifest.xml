@@ -20,21 +20,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".RecipeDetailsActivity"
             android:label="@string/title_activity_ingredients"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme">
 
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value=".MainActivity" />
+        </activity>
 
         <activity
             android:name=".StepActivity"
             android:label="@string/title_activity_step"
             android:parentActivityName=".RecipeDetailsActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.henrikhoang.letsbake.RecipeDetailsActivity"/>
+        </activity>
 
         <receiver android:name=".widget.RecipeWidgetProvider">
             <intent-filter>
@@ -52,7 +59,15 @@
 
         android:permission="android.permission.BIND_REMOTEVIEWS" />
 
-        <activity android:name=".IngredientActivity"></activity>
+        <activity android:name=".IngredientActivity"
+            android:label="Ingredients List"
+            android:parentActivityName=".RecipeDetailsActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.henrikhoang.letsbake.RecipeDetailsActivity"/>
+
+        </activity>
     </application>
 
 </manifest>

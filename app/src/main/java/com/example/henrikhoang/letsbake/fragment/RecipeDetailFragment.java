@@ -111,6 +111,7 @@ implements StepAdapter.StepAdapterOnClickHandler {
                 }
             }
         });
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         return rootView;
 
     }

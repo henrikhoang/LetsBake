@@ -3,7 +3,7 @@ package com.example.henrikhoang.letsbake;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 
 import com.example.henrikhoang.letsbake.fragment.IngredientsFragment;
 import com.example.henrikhoang.letsbake.fragment.RecipeDetailFragment;
@@ -25,6 +25,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
     private static boolean initialOpen;
     private static Recipe mRecipe;
     private static List<Step> mSteps;
+    private static Toolbar mToolbar;
 
 
     public static void setData(int stepIndex) {
@@ -51,6 +52,10 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
             fragmentManager.beginTransaction()
                     .add(R.id.details_list_fragment, recipeDetailFragment)
                     .commit();
+//            mToolbar = (Toolbar) findViewById(R.id.details_toolbar);
+//            setSupportActionBar(mToolbar);
+//            mToolbar.setTitle(mRecipe.getNAME());
+//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         }
         else if (findViewById(R.id.divider_line) == null) {
@@ -62,7 +67,6 @@ public class RecipeDetailsActivity extends AppCompatActivity implements
                     .commit();
         }
 
-        Log.d(TAG, "TWO  PANE = " + mTwoPane);
     }
 
     public static boolean isTwoPane() {

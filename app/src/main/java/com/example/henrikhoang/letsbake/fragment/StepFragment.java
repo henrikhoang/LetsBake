@@ -31,6 +31,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
@@ -73,14 +74,17 @@ public class StepFragment extends Fragment {
     @BindView(R.id.iv_no_video)
     ImageView mNoVideoImageView;
 
+    @BindView(R.id.iv_video_thumbnail)
+    ImageView mVideoThumbnail;
+
     OnButtonClickListener mCallback;
     private static Step mStep;
 
     private static String mVideoURL;
     private static String mThumbnailURL;
 
-    private boolean playThumbnailUrl;
-
+    private static boolean isVideoUrlUnavail;
+    private static boolean isThumbnailUrlUnavail;
 
 
     public interface OnButtonClickListener {
@@ -110,6 +114,10 @@ public class StepFragment extends Fragment {
         super.onSaveInstanceState(outState);
         playbackPosition = player.getCurrentPosition();
         outState.putLong("current play position", playbackPosition);
+
+        playWhenReady = player.getPlayWhenReady();
+        outState.putBoolean("current state", playWhenReady);
+
         Log.d(TAG, "SavedInstanceState " + playbackPosition);
     }
 
@@ -118,6 +126,7 @@ public class StepFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
             playbackPosition = savedInstanceState.getLong("current play position");
+            playWhenReady = savedInstanceState.getBoolean("current state");
             Log.d(TAG, "SavedInstanceStateRestored: " + playbackPosition);
         }
     }
@@ -128,10 +137,9 @@ public class StepFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_step_view, container, false);
         unbinder = ButterKnife.bind(this, rootView);
-        Log.d(TAG, "onCreate");
+
         Step step = mStep;
         if (step != null) {
-            playThumbnailUrl = false;
             mVideoURL = step.getVideoURL();
             mThumbnailURL = step.getThumbnailURL();
             ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
@@ -139,19 +147,30 @@ public class StepFragment extends Fragment {
 
             String description = step.getDescription();
             mInstruction.setText(description);
-            Log.d(TAG, "VIDEO URL CHECK: " + step.getVideoURL());
 
-            boolean isVideoUrlUnavail = Objects.equals(mVideoURL, "");
-            boolean isThumbnailUrlUnavail = Objects.equals(mThumbnailURL, "");
+            isVideoUrlUnavail = Objects.equals(mVideoURL, "");
+            isThumbnailUrlUnavail = Objects.equals(mThumbnailURL, "");
 
             Log.d(TAG, "VIDEO URL CHECK: " + isVideoUrlUnavail);
 
-            if (isVideoUrlUnavail) {
-               if (isThumbnailUrlUnavail) {
+
+            if (isVideoUrlUnavail) { //No Video Url
+               if (isThumbnailUrlUnavail) { //No Thumbnail Url
                    noVideoURl();
-               } else if (!isThumbnailUrlUnavail) {
-                   playThumbnailUrl = true;
-                   hasVideoUrl();
+               } else if (!isThumbnailUrlUnavail) { //has Thumbnail Url
+                   boolean invalidData = mThumbnailURL.contains(".mp4");
+                   Log.d(TAG, String.valueOf(invalidData));
+                   if (invalidData) { //if the Thumbnail Url is valid
+                       noVideoURl();
+                   } else { //if the thumbnail url is invalid
+                       try {
+                           Uri thumbnailUri = Uri.parse(mThumbnailURL).buildUpon().build();
+                           Picasso.get().load(thumbnailUri).into(mVideoThumbnail);
+                       } catch (Exception e) {
+                           e.printStackTrace();
+                       }
+                       showThumbnailImage();
+                   }
                }
             } else {
                hasVideoUrl();
@@ -177,6 +196,7 @@ public class StepFragment extends Fragment {
                 mPreviousButton.setVisibility(View.GONE);
             }
         }
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             return rootView;
 
     }
@@ -227,19 +247,17 @@ public class StepFragment extends Fragment {
         if (player == null) {
             player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(getContext()),
                     new DefaultTrackSelector(), new DefaultLoadControl());
+
             mPlayerView.setPlayer(player);
             player.setPlayWhenReady(playWhenReady);
             player.seekTo(currentWindow, playbackPosition);
         }
-        if (!playThumbnailUrl) {
+        if (!isVideoUrlUnavail) {
             MediaSource mediaSource = buildMediaSource(Uri.parse(mVideoURL));
             player.prepare(mediaSource, false, false);
-         }
 
-        if (playThumbnailUrl) {
-            MediaSource mediaSource = buildMediaSource(Uri.parse(mThumbnailURL));
-            player.prepare(mediaSource, false, false);
         }
+
 
     }
 
@@ -282,6 +300,12 @@ public class StepFragment extends Fragment {
 
     public void hasVideoUrl() {
         mPlayerView.setVisibility(View.VISIBLE);
+        mNoVideoImageView.setVisibility(View.INVISIBLE);
+    }
+
+    public void showThumbnailImage() {
+        mVideoThumbnail.setVisibility(View.VISIBLE);
+        mPlayerView.setVisibility(View.INVISIBLE);
         mNoVideoImageView.setVisibility(View.INVISIBLE);
     }
 

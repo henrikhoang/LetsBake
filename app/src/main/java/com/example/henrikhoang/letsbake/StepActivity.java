@@ -52,8 +52,9 @@ StepFragment.OnButtonClickListener {
                 fragmentManager.beginTransaction()
                         .add(R.id.step_fragment, stepFragment)
                         .commit();
-            }
         }
+
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

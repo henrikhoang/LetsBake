@@ -18,5 +18,6 @@ public class IngredientActivity extends AppCompatActivity {
         fragmentManager.beginTransaction()
                 .add(R.id.ingredient_fragment, fragment)
                 .commit();
+
     }
 }
